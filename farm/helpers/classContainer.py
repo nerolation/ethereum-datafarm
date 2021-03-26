@@ -100,12 +100,18 @@ class DailyResults():
         chunk.to_pickle(pickle_buf)
         s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = "ethereum-datahub", 
-                      Key = '{}/csv/{}.csv'.format(self.name, filename))
+                      Key = '{}_{}/csv/{}.csv'.format(contract.name, 
+                                                   contract.method.canonicalExpression.split("(")[0].lower(),
+                                                   filename))
         s3.put_object(Body = pickle_buf.getvalue(), 
                       Bucket = "ethereum-datahub", 
-                      Key = '{}/pickle/{}.pickle'.format(self.name, filename))
-        print("Saved Chunk to AWS S3 as `{}/{}.(csv|pickle)`".format(self.name, filename))
-        with open('contracts/.lastSafedBlock/{}.txt'.format(contract.name), 'w') as handle:
+                      Key = '{}_{}/pickle/{}.pickle'.format(contract.name, 
+                                                         contract.method.canonicalExpression.split("(")[0].lower(),
+                                                         filename))
+        print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
+                                                                        contract.method.canonicalExpression.split("(")[0].lower(),
+                                                                        filename))
+        with open('contracts/lastSafedBlock/{}_{}.txt'.format(contract.name, contract.method.canonicalExpression.split("(")[0].lower()), 'w') as handle:
             handle.write(str(chunk.iloc[-1]['blocknumber']))
 
         return True
@@ -121,7 +127,7 @@ class Contract:
         self.name = name
         self.method = Method(method)
         self.startBlock = startblock
-        self.chunksize = chunksize
+        self.chunksize = int(chunksize)
         self.chunksizeLock = False
         self.fromBlock = int(self.startBlock)
         self.chunksizeAdjuster = np.array([400*1.3]*10)

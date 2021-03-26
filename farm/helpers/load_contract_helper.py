@@ -27,10 +27,11 @@ def load_contracts(contracts=[], start=True):
                     print("  |--- Method      {}".format(contracts[-1].method.canonicalExpression))
                     print("  |--- Method ID   {}".format(contracts[-1].method.id))
                     print("  |--- StartBlock  {:,}".format(int(contracts[-1].startBlock)))
-                    print("  |--- Chunksize   {:,}\n".format(contracts[-1].chunksize))
+                    print("  |--- Chunksize   {:,}\n".format(int(contracts[-1].chunksize)))
 
                 try:
-                    with open('{}.txt'.format("contracts/.lastSafedBlock/"+contracts[-1].name), 'r') as loadBlock:
+                    filename = "contracts/lastSafedBlock/"+contracts[-1].name+"_"+contracts[-1].method.canonicalExpression.split("(")[0].lower()
+                    with open('{}.txt'.format(filename), 'r') as loadBlock:
                         contracts[-1].fromBlock = int(loadBlock.read())+1
                         print("`Startblock` overwritten for {} to Block {:,}\n\n".format(contracts[-1].name,
                                                                                          contracts[-1].fromBlock))
