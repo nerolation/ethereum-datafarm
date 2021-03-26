@@ -108,9 +108,9 @@ class DailyResults():
                       Key = '{}_{}/pickle/{}.pickle'.format(contract.name, 
                                                          contract.method.canonicalExpression.split("(")[0].lower(),
                                                          filename))
-        print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
-                                                                        contract.method.canonicalExpression.split("(")[0].lower(),
-                                                                        filename))
+        # print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
+                                                                        # contract.method.canonicalExpression.split("(")[0].lower(),
+                                                                      #  filename))
         with open('contracts/lastSafedBlock/{}_{}.txt'.format(contract.name, contract.method.canonicalExpression.split("(")[0].lower()), 'w') as handle:
             handle.write(str(chunk.iloc[-1]['blocknumber']))
 
@@ -146,7 +146,7 @@ class Contract:
     # Increase Chunksize
     def increase_chunksize(self):
         self.chunksize = round(self.chunksize*2) if self.chunksize < 5000 else self.chunksize
-        print('... increasing chunksize for {} to {}'.format(self.name,self.chunksize))
+        #print('... increasing chunksize for {} to {}'.format(self.name,self.chunksize))
         return
     
     def mine(self, query, methodId):
@@ -187,7 +187,7 @@ class Contract:
         # If so, enter recursive mode with a smaller chunksize - try again
         if (len(res['result']) >= 1000): #Request to large
             self.chunksize -= round(self.chunksize / 3)
-            print('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
+            #print('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
             return self.query_API() # Recursive bby
         
         self.chunksizeAdjuster = np.append(self.chunksizeAdjuster,[len(res['result'])])[-10:]
