@@ -169,7 +169,13 @@ class Contract:
         
        
         # Submit Request
-        res = json.loads(requests.get(queryString).content) 
+        res = requests.get(queryString) 
+        if res == None or res =="":
+            print(queryString)
+            print(res) # Debugging
+            print(res.content)
+            return res.res
+        res = json.loads(res.content) 
         
         # Catch fails
         
