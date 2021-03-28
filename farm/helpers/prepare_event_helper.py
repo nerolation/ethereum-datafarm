@@ -4,7 +4,8 @@ def from_hex(string):
     return int(str(string),16)
 
 def prepare_event(e, methodId):
-    if methodId == "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef":
+    if methodId in ["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                    "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"]:
         va = from_hex(e['data'])
         bn = from_hex(e['blockNumber'])
         ts = from_hex(e['timeStamp'])
