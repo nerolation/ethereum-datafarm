@@ -87,7 +87,7 @@ class Contract:
         if (len(res['result']) >= 1000): #Request to large
             self.chunksize -= round(self.chunksize / 3)
             #print('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
-            return self.query_API() # Recursive bby
+            return self.query_API(KEY) # Recursive bby
         
         self.chunksizeAdjuster = np.append(self.chunksizeAdjuster,[len(res['result'])])[-10:]
         self.fromBlock += self.chunksize + 1
