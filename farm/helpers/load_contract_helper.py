@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 
 
 def restore_fromBlock_from_AWS(contract):
-    for date in (datetime.datetime.now() - datetime.timedelta(days=i+365) for i in range(1000)):
+    for date in (datetime.datetime.now() - datetime.timedelta(days=i) for i in range(1000)):
         fileKey = "{}_{}/csv/{}.csv".format(contract.name,
                                             contract.method.canonicalExpression.split("(")[0].lower(),
                                             date.strftime("%d_%m_%Y"))
@@ -82,5 +82,6 @@ def load_contracts(contracts=[], start=True, location="contracts"):
                     else:
                         restore_fromBlock_from_AWS(contracts[-1])
                 except:
+                    input("fromBlock not overwritten. Please confirm")
                     pass
     return contracts
