@@ -10,13 +10,13 @@ from farm.Farm import *
 # In[2]:
 
 
-contracts = load_contracts(location="contracts2")
+contracts = load_contracts()#location="contracts2")
 
 
 
-secKey = ".apikey/key2.txt"
+#secKey = ".apikey/key2.txt"
 
-farm = Farm(contracts=contracts, keyPath=secKey).status()
+farm = Farm(contracts=contracts).status()
 farm.start_farming()
 
 
