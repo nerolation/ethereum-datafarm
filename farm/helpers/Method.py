@@ -7,3 +7,4 @@ class Method:
     def __init__(self, method):
         self.canonicalExpression = method
         self.id = get_method_from_canonical_expression(method)
+        self.simpleExp = method.split("(")[0].lower()

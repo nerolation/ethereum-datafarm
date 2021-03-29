@@ -78,19 +78,24 @@ class DailyResults():
         chunk.to_pickle(pickle_buf)
         s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = "ethereum-datahub", 
-                      Key = '{}_{}/csv/{}.csv'.format(contract.name, 
-                                                   contract.method.canonicalExpression.split("(")[0].lower(),
-                                                   filename))
+                      Key = 'contracts/{}_{}/csv/{}.csv'.format(contract.name, 
+                                                               contract.method.canonicalExpression.split("(")[0].lower(),
+                                                               filename))
         s3.put_object(Body = pickle_buf.getvalue(), 
                       Bucket = "ethereum-datahub", 
-                      Key = '{}_{}/pickle/{}.pickle'.format(contract.name, 
-                                                         contract.method.canonicalExpression.split("(")[0].lower(),
-                                                         filename))
+                      Key = 'contracts/{}_{}/pickle/{}.pickle'.format(contract.name, 
+                                                                     contract.method.canonicalExpression.split("(")[0].lower(),
+                                                                     filename))
         # print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
                                                                         # contract.method.canonicalExpression.split("(")[0].lower(),
                                                                       #  filename))
-        with open('{}/lastSafedBlock/{}_{}.txt'.format(contract.path, contract.name, contract.method.canonicalExpression.split("(")[0].lower()), 'w') as handle:
-            handle.write(str(chunk.iloc[-1]['blocknumber']))
+                
+                
+        fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format(contract.path,
+                                                         contract.name,
+                                                         contract.method.canonicalExpression.split("(")[0].lower())
+        s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket="ethereum-datahub",Key=fK)
+      
 
         return True
 
