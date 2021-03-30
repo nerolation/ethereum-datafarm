@@ -6,11 +6,15 @@ import requests
 import time
 import json
 import csv
+from json.decoder import JSONDecodeError
+
 from farm.helpers.prepare_event_helper import from_hex, prepare_event
 from farm.helpers.DailyResults import DailyResults
 from farm.helpers.Method import Method
 
-API = 'https://api.etherscan.io/api?module=logs&action=getLogs'  # API endpoint
+# Etherscan API endpoint
+API = 'https://api.etherscan.io/api?module=logs&action=getLogs' 
+# Query for the API call, specifying topic0 (Method ID) and topic0_1 (Contract Address)
 APIQuery = '{}&fromBlock={}&toBlock={}&topic0={}&topic0_1_opr=and&address={}&apikey={}'
 
 def from_unix(time):
@@ -19,11 +23,18 @@ def from_unix(time):
     except:
         return datetime.utcfromtimestamp(time).strftime("%d/%m/%Y %H:%M:%S")
 
+#
+# Contract Object
+#
+# Contracts are loaded into an array which is then passed to the Farm object. A Contract 
+#   consists consists of an address, a name and a method, which are the parameters used
+#   to differentiate contracts. This opens up is the possibility to mine data from multiple
+#   events from  the same contract
 class Contract:
     def __init__(self, addr, name, method, startblock, chunksize = 2000):
-        self.addr = addr
-        self.name = name
-        self.method = Method(method)
+        self.addr = addr # Contract address
+        self.name = name.lower() # Lowercase name
+        self.method = Method(method) # Contract Method
         self.startBlock = startblock
         self.chunksize = int(chunksize)
         self.chunksizeLock = False
@@ -37,14 +48,14 @@ class Contract:
     # Check if the average number of results of the the last 10 request has to 
     # less elements and adjust the chunksize if applicable
     def chunksize_could_be_larger(self):
-        if np.mean(self.chunksizeAdjuster) < 400 and self.chunksize < 5000:
+        if np.mean(self.chunksizeAdjuster) < 400 and self.chunksize < 10000:
             return True
         return False
     
     
     # Increase Chunksize
     def increase_chunksize(self):
-        self.chunksize = round(self.chunksize*2) if self.chunksize < 5000 else self.chunksize
+        self.chunksize = round(self.chunksize*2) if self.chunksize < 10000 else self.chunksize
         #print('... increasing chunksize for {} to {}'.format(self.name,self.chunksize))
         return
     
@@ -68,7 +79,11 @@ class Contract:
         
        
         # Submit Request
-        res = json.loads(requests.get(queryString).content) 
+        try:
+            res = json.loads(requests.get(queryString).content) 
+        except JSONDecodeError:
+            print("Some strange JSONDecodeError")
+            return None
         
         # Catch fails
         
