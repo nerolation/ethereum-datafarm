@@ -84,8 +84,8 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
         # remove contracts whos address is set to `remove`
         if contAddr == "remove":
             for i in contracts:
-                if contract.split(",")[1] == i.name:
-                    print("\n ---Contract of `{}` REMOVED---\n".format(i.name))
+                if contract.split(",")[2].split("(")[0].lower() == i.method.simpleExp:
+                    print("\n ---Contract of `{}` with method {} removed---\n".format(i.name, i.method.simpleExp))
                     del contracts[contracts.index(i)]
                     
         # if nothing change and contract remains in the farm           
