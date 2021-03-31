@@ -1,27 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from farm.Farm import *
 
-
-# In[2]:
-
-
-contracts = load_contracts()#location="contracts2")
+aws_bucket = "ethereum-datahub"
+keyPath = ".apikey/key.txt"
 
 
 
-#secKey = ".apikey/key2.txt"
+if __name__=="__main__":
+    contracts = load_contracts(config_location="contracts", aws_bucket=aws_bucket)
 
-farm = Farm(contracts=contracts).status()
-farm.start_farming()
-
-
-# In[ ]:
-
-
-
+    farm = Farm(contracts=contracts, keyPath=keyPath, aws_bucket=aws_bucket).status()
+    farm.start_farming()
 
