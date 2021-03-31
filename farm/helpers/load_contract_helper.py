@@ -28,7 +28,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
         
         # get last row of file and set last mined block to the contract's `fromBlock`
         try:
-            df = pd.robjead_csv(s3.get_object(Bucket=aws_bucket, Key=fileKey)['Body'])  
+            df = pd.read_csv(s3.get_object(Bucket=aws_bucket, Key=fileKey)['Body'])  
             contract.fromBlock = df.iloc[-1]['blocknumber']+1
             print("...'fromBlock' successfully loaded from AWS")
             
