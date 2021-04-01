@@ -77,7 +77,7 @@ class Contract:
                                        self.addr, 
                                        KEY)
         
-       
+        
         # Submit Request
         try:
             res = json.loads(requests.get(queryString).content) 
@@ -85,7 +85,8 @@ class Contract:
             print(requests.get(queryString).content)
             print("Some strange JSONDecodeError")
             return None
-        finally:
+        except:
+            print("Some other strange error")
             return None
         
         # Catch fails
