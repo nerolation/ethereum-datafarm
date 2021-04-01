@@ -82,7 +82,10 @@ class Contract:
         try:
             res = json.loads(requests.get(queryString).content) 
         except JSONDecodeError:
+            print(requests.get(queryString).content)
             print("Some strange JSONDecodeError")
+            return None
+        finally:
             return None
         
         # Catch fails
