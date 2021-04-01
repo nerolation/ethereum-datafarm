@@ -79,21 +79,21 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
     objB = s3.get_object(Bucket=aws_bucket, Key = fileKey)['Body']
     contractArray = objB.read().decode("utf-8").strip().split("\n")
     #Loop over list of contract entries
-    for contract in contractArray:
-        contAddr=contract.split(",")[0]
+    for contract_string in contractArray:
+        contAddr=contract_string.split(",")[0]
         # remove contracts whos address is set to `remove`
         if contAddr == "remove":
             for i in contracts:
-                if contract.split(",")[2].split("(")[0].lower() == i.method.simpleExp:
+                if i.name == contract_string.split(",")[1] and contract_string.split(",")[2].split("(")[0].lower() == i.method.simpleExp:
                     print("\n ---Contract of `{}` with method {} removed---\n".format(i.name, i.method.simpleExp))
                     del contracts[contracts.index(i)]
                     
         # if nothing change and contract remains in the farm           
-        elif contAddr in cont.keys() and contract.split(",")[2].split("(")[0].lower() in cont[contAddr]:
+        elif contAddr in cont.keys() and contract_string.split(",")[2].split("(")[0].lower() in cont[contAddr]:
             continue
         # new contract => Contract object initiated and provided to the farm
         else:
-            contracts.append(Contract(*tuple(re.split("\,(?=.*\()|\,(?!.*\))", contract))))
+            contracts.append(Contract(*tuple(re.split("\,(?=.*\()|\,(?!.*\))", contract_string))))
             contracts[-1].path = config_location
             if start:
                 print("Contract loaded @  {}".format(contracts[-1].addr))
