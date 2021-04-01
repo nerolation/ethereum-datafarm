@@ -76,14 +76,13 @@ class Farm:
     def get_latest_block(self):
         q = 'https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey={}'
         try:
-            from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
+            return from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
         except:
             q = requests.get(q.format(self.KEY).content)
             print(q)                
             q = json.loads(q)['result']
             lB = from_hex(q)
-                             
-        return 
+            return lB            
     
     # Wait if getting very close (self.lag) to the latestBlock
     def not_wait(self, contract):
