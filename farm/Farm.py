@@ -17,7 +17,6 @@ class Farm:
         # Load API KEY
         with open(keyPath) as k:
             self.KEY = str(k.read().strip())
-        print(self.get_latest_block())
         # Set latest block
         self.latestBlock = self.get_latest_block()
         
@@ -79,7 +78,14 @@ class Farm:
         try:
             return from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
         except:
-            q = requests.get(q.format(self.KEY).content)
+            print("Except latest block")
+            q = q.format(self.KEY)
+            if "Bad Gateway" in str(q):
+                print("Bad Gateway - latest Block")
+                time.sleep(10)
+                return self.latestBlock
+            q = q.content
+            q = requests.get(q)
             print(q)                
             q = json.loads(q)['result']
             lB = from_hex(q)
