@@ -75,7 +75,15 @@ class Farm:
     # Get latest mined block from Etherscan
     def get_latest_block(self):
         q = 'https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey={}'
-        return from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
+        try:
+            from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
+        except:
+            q = requests.get(q.format(self.KEY).content)
+            print(q)                
+            q = json.loads(q)['result']
+            lB = from_hex(q)
+                             
+        return 
     
     # Wait if getting very close (self.lag) to the latestBlock
     def not_wait(self, contract):
