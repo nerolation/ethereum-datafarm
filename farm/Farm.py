@@ -17,9 +17,10 @@ class Farm:
         # Load API KEY
         with open(keyPath) as k:
             self.KEY = str(k.read().strip())
-        
+        print(self.get_latest_block())
         # Set latest block
         self.latestBlock = self.get_latest_block()
+        
         
         # Contracts objs.
         self.contracts = contracts
