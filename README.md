@@ -11,13 +11,19 @@ Features:
 * .Csv and .pickle support
 
 ### Install from source
-```
+```bash
 $ git clone https://github.com/Nerolation/ethereum-datafarm
 $ cd ethereum-datafarm
 $ virtualenv ./venv
 $ . ./venv/bin/activate
 $ pip3 install -r requirements.txt
-$ pip3 install -e .
+$ mkdir .apikey .aws
+$ nano .apikey/key.txt      => <API_Key>
+$ nano .aws/credentials.txt => <AWS_credentials>
+
+.aws/credentials.tx has the following structure (example):
+AKIAIOSFODNN7EXAMPLE
+wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 #### Requirements:
 
@@ -25,41 +31,8 @@ $ pip3 install -e .
 * AWS S3 bucket and the related credentials
 * Etherscan API key (for free at [etherscan.io](https://etherscan.io))
 * Right filesystem structure (see below)
-
-
-### Usage
-```python
-from farm.Farm import *
-
-# Your AWS bucket
-aws_bucket = "ethereum-datafarm"
-
-# Path to Etherscan API key
-keyPath = ".apikey/key.txt"
-
-
-# Run
-if __name__=="__main__":
-    
-    # Load contracts
-    # @param config_location Location of config file (contracts.csv)
-    # @param aws_bucket Aws bucket name
-    contracts = load_contracts(config_location="contracts2", aws_bucket=aws_bucket)
-
-    # Initialize Farm and get status
-    #
-    # @param contracts Loaded contracts array
-    # @param keyPath Path to API key
-    farm = Farm(contracts=contracts, keyPath=keyPath, aws_bucket=aws_bucket).status()
-    farm.start_farming()
-```
-
-### Demo
-[![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
-
-
-#### Required Filesystem structure
-```
+##### Required Filesystem structure
+```console
 ethereum-datafarm/
 |-- farm/
 |   |-- helpers/
@@ -84,5 +57,50 @@ ethereum-datafarm/
 |
 |-- README
 ```
+<br />
+
+## Usage
+---
+```python
+from farm.Farm import *
+
+
+aws_bucket = "ethereum-datahub" # Your AWS bucket
+keyPath = ".apikey/key2.txt"    # Path to Etherscan API key
+config_location="contracts"     # Path to location of config file (contracts.csv)
+
+
+# Run
+if __name__=="__main__":
+    
+    # Load contracts
+    contracts = load_contracts(config_location=config_location, aws_bucket=aws_bucket)
+
+    # Initialize Farm and get status
+    farm = Farm(contracts=contracts, keyPath=keyPath, aws_bucket=aws_bucket).status()
+    farm.start_farming()
+```
+
+<br />
+
+## Demo
+---
+Initialize farm and starts scraping data:
+* Loads contracts from config/contracts.csv file and created Contract objects
+* Starts farm instance
+* Loops over contracts and safes data into .csv and .pickle files <br /><br />
+[![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
+```console
+Logging Output:
+$ Timestamp -       Current timestamp
+$ Contract -        Address of contract being processed
+$ Current Chunk -   Block range being processed
+$ Chunk Timestamp - Timestamp of processed block range
+$ Events -          Number of events found in last chunk
+$ Chsz -            Current Chunksize
+$ Fc -              Filecounter - Files safed since initialization
+```
+
+
 
 
