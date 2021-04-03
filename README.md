@@ -21,7 +21,6 @@ $ cd ethereum-datafarm
 $ virtualenv ./venv
 $ . ./venv/bin/activate
 $ pip3 install -r requirements.txt
-$ mkdir .apikey .aws
 $ nano .apikey/key.txt      => <API_Key>
 $ nano .aws/credentials.txt => <AWS_credentials>
 ```
