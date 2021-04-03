@@ -115,7 +115,7 @@ Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 ![image](https://ethereum-datahub.s3.eu-central-1.amazonaws.com/graphs/stablecoin_transfers_for-git.png)
 
 
-Check out [toniwahrstaetter.com/example_usage](https://toniwahrstaetter.com/example_usage.html). 
+[Click here](https://toniwahrstaetter.com/example_usage.html) for more examples using the data
 
 
 
@@ -124,6 +124,6 @@ Check out [toniwahrstaetter.com/example_usage](https://toniwahrstaetter.com/exam
 
 
 Visit [toniwahrstaetter.com](https://toniwahrstaetter.com/) for further details!
-<br/><br/><br/>
+<br/><br/>
 
 Anton Wahrstätter, 03.04.2021 
