@@ -20,11 +20,12 @@ $ pip3 install -r requirements.txt
 $ mkdir .apikey .aws
 $ nano .apikey/key.txt      => <API_Key>
 $ nano .aws/credentials.txt => <AWS_credentials>
-
-.aws/credentials.tx has the following structure (example):
-AKIAIOSFODNN7EXAMPLE
-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
+
+
+###### The .aws/credentials.tx must look like the following: <br /><br />  AKIAIOSFODNN7EXAMPLE <br /> wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+
 #### Requirements:
 
 * Python 3.5 or higher
@@ -103,4 +104,7 @@ $ Fc -              Filecounter - Files safed since initialization
 
 
 
+Visit [toniwahrstaetter.com](https://toniwahrstaetter.com/) for further details!
+<br/><br/><br/>
 
+Anton Wahrstätter, 03.04.2021 
