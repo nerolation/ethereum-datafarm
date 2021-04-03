@@ -62,7 +62,7 @@ ethereum-datafarm/
 <br />
 
 ## Usage
----
+
 ```python
 from farm.Farm import *
 
@@ -86,7 +86,7 @@ if __name__=="__main__":
 <br />
 
 ## Demo
----
+
 Initialize farm and starts scraping data:
 * Loads contracts from config/contracts.csv file and created Contract objects
 * Starts farm instance
