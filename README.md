@@ -55,7 +55,7 @@ if __name__=="__main__":
 ```
 
 ### Demo
-...
+[![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
 
 
 #### Required Filesystem structure
