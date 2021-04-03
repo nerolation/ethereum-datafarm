@@ -10,7 +10,7 @@ Features:
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv and .pickle support
 
-### Example data
+### Example data output
 ![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
 
 
