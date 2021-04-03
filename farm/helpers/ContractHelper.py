@@ -12,11 +12,15 @@ from botocore.exceptions import ClientError
 def animation(string=None):
     if string:
         sys.stdout.write(string)
+        sys.stdout.flush()
     sys.stdout.write(".")
+    sys.stdout.flush()
     time.sleep(0.8)
     sys.stdout.write(".")
+    sys.stdout.flush()
     time.sleep(0.8)
     sys.stdout.write(".")
+    sys.stdout.flush()
     time.sleep(1)
     print("\n")
 
