@@ -111,6 +111,7 @@ class Farm:
         for s in self.contracts:
             string += s.__repr__() + "\n"
         print("Farm instance initiated with the following contracts\n\n{}".format(string))
+        time.sleep(1)
         return self
     
     # Header of output
