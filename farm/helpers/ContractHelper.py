@@ -146,7 +146,7 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
             else:
                 ip = input("FromBlock not overwritten for {}. Please verify (y/n)".format(contracts[-1].name))
                 assert(ip != "n")
-                pass
+                time.sleep(1)
     return contracts
 
 
