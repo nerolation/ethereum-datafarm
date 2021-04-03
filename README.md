@@ -109,11 +109,14 @@ $ Fc -              Filecounter - Files safed since initialization
 <br />
 
 ### Examples
+
+Compare the number of Transfers of the largest Stablecoins
+
 ![image](https://ethereum-datahub.s3.eu-central-1.amazonaws.com/graphs/stablecoin_transfers_for-git.png)
 
 
 Check out [toniwahrstaetter.com/example_usage](https://toniwahrstaetter.com/example_usage.html). 
-Using the scraped data, I created several graphs
+
 
 
 
