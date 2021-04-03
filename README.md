@@ -10,6 +10,10 @@ Features:
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv and .pickle support
 
+### Example data
+![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
+
+
 ### Install from source
 ```bash
 $ git clone https://github.com/Nerolation/ethereum-datafarm
@@ -102,7 +106,7 @@ $ Events -          Number of events found in last chunk
 $ Chsz -            Current Chunksize
 $ Fc -              Filecounter - Files safed since initialization
 ```
-
+<br />
 
 
 Visit [toniwahrstaetter.com](https://toniwahrstaetter.com/) for further details!
