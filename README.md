@@ -110,7 +110,7 @@ $ Fc -              Filecounter - Files safed since initialization
 
 ### Examples
 
-![image](https://ethereum-datahub.s3.eu-central-1.amazonaws.com/graphs/stablecoin_transfers_forgit.png)
+
 
 Check out [toniwahrstaetter.com/example_usage](https://toniwahrstaetter.com/example_usage.html). 
 Using the scraped data, I created several graphs
