@@ -117,7 +117,7 @@ class Farm:
     # Header of output
     def log_header(self):
         header = ("Timestamp", "Contract", "Current Chunk", "Chunk Timestamp", "Events", "Chsz", "Fc")
-        log = "\033[4m{:^23}-{:^18}|{:^21}| {:^18}  |{:^6}|{:^6}|{:^6}\033[0m".format(*header)
+        log = "\033[4m{:^23}-{:^18}|{:^21}| {:^20}|{:^6}|{:^6}|{:^6}\033[0m".format(*header)
         print(log)
     
     # Check end.txt file if the program should stop
