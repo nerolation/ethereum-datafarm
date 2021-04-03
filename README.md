@@ -27,7 +27,7 @@ $ nano .aws/credentials.txt => <AWS_credentials>
 ```
 
 
-###### The .aws/credentials.tx must look like the following: <br /><br />  AKIAIOSFODNN7EXAMPLE <br /> wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+###### The .aws/credentials.tx might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br /><br />  AKIAIOSFODNN7EXAMPLE <br /> wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
 
 #### Requirements:
