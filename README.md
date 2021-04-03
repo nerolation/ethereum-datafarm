@@ -32,7 +32,8 @@ $ nano .aws/credentials.txt => <AWS_credentials>
 * AWS S3 bucket and the related credentials
 * Etherscan API key (for free at [etherscan.io](https://etherscan.io))
 * Right filesystem structure (see below)
-##### Required Filesystem structure
+
+##### Required Filesystem structure:
 ```console
 ethereum-datafarm/
 |-- farm/
