@@ -47,7 +47,7 @@ output=json
 * Etherscan API key (for free at [etherscan.io](https://etherscan.io))
 * Right filesystem structure (see below)
 
-##### Required Filesystem structure:
+##### Required Local Filesystem structure:
 ```console
 ethereum-datafarm/
 |-- farm/
@@ -75,6 +75,24 @@ ethereum-datafarm/
 |-- README
 ```
 <br />
+
+##### Required S3 Bucket structure:
+
+```console
+s3://
+|-- <Your Bucket's name>/
+|   |-- config/
+|   |   |-- contracts.csv
+```
+<br />
+
+##### Make sure that contracts.csv has the following structure: (Contract address, custom name, canonical Event, start block, chunksize)
+
+```js
+0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Approval(address,address,uint256),10921410,20000
+0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Transfer(address,address,uint256),10921410,20000
+0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9,compound_tether,Approval(address,address,uint256),9879363,20000
+```
 
 ## Usage
 
