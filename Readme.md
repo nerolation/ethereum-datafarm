@@ -14,6 +14,27 @@ Features:
 ### Example data output
 ![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
 
+## Usage
+
+```python
+from farm.Farm import *
+
+
+aws_bucket = "ethereum-datahub" # Your AWS bucket
+
+
+# Run
+if __name__=="__main__":
+    
+    # Load contracts
+    contracts = load_contracts(aws_bucket=aws_bucket)
+
+    # Initialize Farm and get status
+    farm = Farm(contracts=contracts,aws_bucket=aws_bucket).status()
+    farm.start_farming()
+```
+
+<br />
 
 ### Install from source
 ```bash
@@ -91,28 +112,6 @@ s3://
 0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Transfer(address,address,uint256),10921410,20000
 0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9,compound_tether,Approval(address,address,uint256),9879363,20000
 ```
-
-## Usage
-
-```python
-from farm.Farm import *
-
-
-aws_bucket = "ethereum-datahub" # Your AWS bucket
-
-
-# Run
-if __name__=="__main__":
-    
-    # Load contracts
-    contracts = load_contracts(aws_bucket=aws_bucket)
-
-    # Initialize Farm and get status
-    farm = Farm(contracts=contracts,aws_bucket=aws_bucket).status()
-    farm.start_farming()
-```
-
-<br />
 
 ## Demo
 
