@@ -83,9 +83,8 @@ s3://
 |   |   |-- contracts/
 |   |   |   |-- contracts.csv
 ```
-<br />
-
 ##### Make sure that contracts.csv has the following structure: (Contract address, custom name, canonical Event, start block, chunksize)
+<br />
 
 ```js
 0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Approval(address,address,uint256),10921410,20000
