@@ -21,19 +21,23 @@ $ cd ethereum-datafarm
 $ virtualenv ./venv
 $ . ./venv/bin/activate
 $ pip3 install -r requirements.txt
-$ nano .apikey/key.txt      => <API_Key>
-$ nano .aws/credentials.txt => <AWS_credentials>
+$ nano .apikey/key.txt   => <API_Key>
+$ nano .aws/credentials  => <AWS_credentials>
+$ nano .aws/config       => <Configs>
 ```
 
 
-###### The .aws/credentials.tx might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br />
+##### The .aws/credentials file might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br />
 ```
-$ <aws_access_key_id>
-$ <aws_secret_access_key>
-for example:
-
-AKIAIOSFODNN7EXAMPLE
-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+[default]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
+##### The config file:
+```
+[default]
+region=eu-central-1
+output=json
 ```
 
 #### Requirements:
@@ -58,11 +62,12 @@ ethereum-datafarm/
 |   |-- __init__.py
 |   |-- Farm.py
 |
-|-- .aws/                 // Not in repo
-|   |-- credentials.txt
+|-- .aws/                 
+|   |-- credentials         // Not in repo
+|   |-- config              // Not in repo
 |   
-|-- .apikey/              // Not in repo
-|   |-- apikey.txt
+|-- .apikey/             
+|   |-- apikey.txt         // Not in repo
 |
 |-- config/
 |   |-- end.txt
