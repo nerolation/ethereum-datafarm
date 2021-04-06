@@ -26,8 +26,15 @@ $ nano .aws/credentials.txt => <AWS_credentials>
 ```
 
 
-###### The .aws/credentials.tx might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br /><br />  AKIAIOSFODNN7EXAMPLE <br /> wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+###### The .aws/credentials.tx might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br />
+```
+$ <aws_access_key_id>
+$ <aws_secret_access_key>
+for example:
 
+AKIAIOSFODNN7EXAMPLE
+wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
 
 #### Requirements:
 
@@ -51,10 +58,10 @@ ethereum-datafarm/
 |   |-- __init__.py
 |   |-- Farm.py
 |
-|-- .aws/
+|-- .aws/                 // Not in repo
 |   |-- credentials.txt
 |   
-|-- .apikey/
+|-- .apikey/              // Not in repo
 |   |-- apikey.txt
 |
 |-- config/
