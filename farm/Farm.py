@@ -66,7 +66,7 @@ class Farm:
                         
                 else:
                     print("Waiting for {}".format(i.name))
-                    if i.shouldWait = False:
+                    if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
                     self.wait(i)
