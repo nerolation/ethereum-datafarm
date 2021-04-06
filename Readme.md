@@ -83,7 +83,8 @@ ethereum-datafarm/
 s3://
 |-- <Your Bucket's name>/
 |   |-- config/
-|   |   |-- contracts.csv
+|   |   |-- contracts/
+|   |   |   |-- contracts.csv
 ```
 <br />
 
@@ -102,18 +103,16 @@ from farm.Farm import *
 
 
 aws_bucket = "ethereum-datahub" # Your AWS bucket
-keyPath = ".apikey/key2.txt"    # Path to Etherscan API key
-config_location="contracts"     # Path to location of config file (contracts.csv)
 
 
 # Run
 if __name__=="__main__":
     
     # Load contracts
-    contracts = load_contracts(config_location=config_location, aws_bucket=aws_bucket)
+    contracts = load_contracts(aws_bucket=aws_bucket)
 
     # Initialize Farm and get status
-    farm = Farm(contracts=contracts, keyPath=keyPath, aws_bucket=aws_bucket).status()
+    farm = Farm(contracts=contracts,aws_bucket=aws_bucket).status()
     farm.start_farming()
 ```
 
