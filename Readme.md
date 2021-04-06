@@ -1,11 +1,12 @@
 # ethereum-datafarm
 
-The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in csv and pickle format.
+The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in .csv and .pickle format.
 
 Features:
-* Scrap every type of event data from pre-defined contracts
+* Scraps every type of event data from pre-defined contracts
+* Saves each day in a separate file
 * No local or Infura node needed => Etherscan.io API is used
-* Add or remove contracts to/from farm during runtime
+* Possibility to add or remove contracts to/from farm during runtime
 * Already pre-configured for multiple events used by various contracts
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv and .pickle support
