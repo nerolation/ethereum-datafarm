@@ -44,6 +44,7 @@ class Contract:
         self.DailyResults = DailyResults(self.name, datetime.now()) # DailyResults obj.
         self.path = None # Path to the contract.csv file
         self.headerColumn = get_header_columns(self.method.id)
+        self.shouldWait = False
     
     # Check if the average number of results of the the last 10 request has to 
     # less elements and adjust the chunksize if applicable

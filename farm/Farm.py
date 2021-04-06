@@ -14,21 +14,15 @@ from farm.helpers.EventHelper import from_hex
 # 
 class Farm:
     def __init__(self, contracts, keyPath=".apikey/key.txt", aws_bucket=None):
-        # Load API KEY
-        with open(keyPath) as k:
+        self.contracts = contracts                 # Contracts objs.
+        self.contract_length = len(contracts)      # Number of contracts
+        self.waitingMonitor = 0                    # Helper to slow down scraping
+        with open(keyPath) as k:                   # Load API KEY
             self.KEY = str(k.read().strip())
-        # Set latest block
-        self.latestBlock = self.get_latest_block()
-        
-        
-        # Contracts objs.
-        self.contracts = contracts
-        
-        # AWS Bucket name
-        self.aws_bucket = aws_bucket
-        
-        # Block Number delay to not risk invalid blocks
-        self.lag = 24  
+        self.latestBlock = self.get_latest_block() # Set latest block
+        self.aws_bucket = aws_bucket               # AWS Bucket name
+       
+        self.lag = 24                              # Block delay to not risk invalid blocks
         print("\n")
         animation("Initiating Farm Instance with {} Contracts/Methods".format(len(contracts)))
                 
@@ -40,6 +34,8 @@ class Farm:
         self.log_header()
         while(endless):
             endless = self.safe_end()
+            # Slow down program if the latest block is reached for every token
+            self.adjust_speed()
             # Update latestBlock
             self.latestBlock = self.get_latest_block()
             # Load or remove new contracts
@@ -70,7 +66,15 @@ class Farm:
                         
                 else:
                     print("Waiting for {}".format(i.name))
+                    if i.shouldWait = False:
+                        i.shouldWait = True
+                        self.waitingMonitor += 1
                     self.wait(i)
+    
+    # Wait some time if every contract reached the latest block
+    def adjust_speed(self):
+        if self.contract_length == self.waitingMonitor:
+            time.sleep(10)
     
     # Get latest mined block from Etherscan
     def get_latest_block(self):
@@ -103,7 +107,9 @@ class Farm:
                 contract.chunksize = round(contract.chunksize/2)
         else:
             contract.chunksize = len(self.contracts)
-            contract.chunksizeLock = True   
+            contract.chunksizeLock = True
+        # If every contract reached the latest mined block then wait
+
     
     # Print status of the current instance, including its contracts 
     def status(self):
