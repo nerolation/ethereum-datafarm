@@ -64,8 +64,8 @@ ethereum-datafarm/
 |   |-- Farm.py
 |
 |-- .aws/                 
-|   |-- credentials         // Not in repo
-|   |-- config              // Not in repo
+|   |-- credentials        // Not in repo
+|   |-- config             // Not in repo
 |   
 |-- .apikey/             
 |   |-- apikey.txt         // Not in repo
