@@ -16,7 +16,7 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 
 ## Example data output
 ![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
-Or check out [this sample output file](sample_output/csv/12_12_2019.csv) of dai transfers
+Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai transfers
 <br />
 
 ## Usage
