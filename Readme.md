@@ -5,7 +5,7 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 ## Features:
 * Scraps every type of event data from pre-defined contracts
 * Saves each day in a separate file
-* No local or Infura node needed => Etherscan.io API is used
+* No local or [Infura](https://infura.io/?utm_source=Nerolation_Github&utm_medium=ethereum-datafarm) node needed => Etherscan.io API is used
 * Possibility to add or remove contracts to/from the queue during runtime
 * Possibility to securely terminate execution (config/end.txt file)
 * Already pre-configured for multiple events used by various contracts
