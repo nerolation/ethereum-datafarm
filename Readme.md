@@ -2,7 +2,7 @@
 
 The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in .csv and .pickle format.
 
-Features:
+## Features:
 * Scraps every type of event data from pre-defined contracts
 * Saves each day in a separate file
 * No local or Infura node needed => Etherscan.io API is used
@@ -10,9 +10,11 @@ Features:
 * Already pre-configured for multiple events used by various contracts
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv and .pickle support
+<br />
 
-### Example data output
+## Example data output
 ![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
+<br />
 
 ## Usage
 
@@ -61,6 +63,7 @@ aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 region=eu-central-1
 output=json
 ```
+See the [official documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) for furter infos
 
 #### Requirements:
 
@@ -130,7 +133,7 @@ $ Fc -              Filecounter - Files safed since initialization
 ```
 <br />
 
-### Examples
+## Examples
 
 Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 
