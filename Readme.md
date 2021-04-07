@@ -7,13 +7,16 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 * Saves each day in a separate file
 * No local or Infura node needed => Etherscan.io API is used
 * Possibility to add or remove contracts to/from farm during runtime
+* Possibility to securely terminate execution (config/end.txt file)
 * Already pre-configured for multiple events used by various contracts
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv and .pickle support
+* Throttles down the number of requests to the API when the latest block is reached
 <br />
 
 ## Example data output
 ![image](https://user-images.githubusercontent.com/51536394/113472965-cd7c9100-9466-11eb-928b-b372b57fe749.png)
+
 <br />
 
 ## Usage
@@ -117,7 +120,7 @@ s3://
 ## Demo
 
 Initialize farm and starts scraping data:
-* Loads contracts from config/contracts.csv file and created Contract objects
+* Loads contracts from config/contracts.csv file and creates Contract objects
 * Starts farm instance
 * Loops over contracts and safes data into .csv and .pickle files <br /><br />
 [![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
