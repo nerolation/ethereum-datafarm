@@ -6,7 +6,7 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 * Scraps every type of event data from pre-defined contracts
 * Saves each day in a separate file
 * No local or Infura node needed => Etherscan.io API is used
-* Possibility to add or remove contracts to/from farm during runtime
+* Possibility to add or remove contracts to/from the queue during runtime
 * Possibility to securely terminate execution (config/end.txt file)
 * Already pre-configured for multiple events used by various contracts
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
@@ -116,6 +116,14 @@ s3://
 0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Transfer(address,address,uint256),10921410,20000
 0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9,compound_tether,Approval(address,address,uint256),9879363,20000
 ```
+If you'd like to remove a contract during runtime, just switch the contracts address in the contracts.csv file with the word "remove":
+```js
+remove,compound_uni,Approval(address,address,uint256),10921410,20000
+```
+#### config/end.txt
+The *end.txt* file is used to securely terminate the programme at a known position in the loop.
+False means "no end", True equals "end, stop the programme"
+<br />
 
 ## Demo
 
