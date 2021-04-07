@@ -101,7 +101,7 @@ ethereum-datafarm/
 |-- README
 ```
 ##### Required S3 Bucket structure:
-```console
+```data
 s3://
 |-- <Your Bucket's name>/
 |   |-- config/
