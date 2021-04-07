@@ -128,7 +128,7 @@ False means "no end", True equals "end, stop the programme"
 Initialize farm and starts scraping data:
 * Loads contracts from config/contracts.csv file and creates Contract objects
 * Starts farm instance
-* Loops over contracts and safes data into .csv and .pickle files <br /><br />
+* Loops over contracts and saves data into .csv and .pickle files <br /><br />
 [![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
 ```console
 Logging Output:
@@ -150,10 +150,11 @@ Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 ![image_example](https://ethereum-datahub.s3.eu-central-1.amazonaws.com/graphs/stablecoin_transfers_for-git.png)
 
 
-[Click here](https://toniwahrstaetter.com/example_usage.html) for more examples using the data
+[Click here](https://toniwahrstaetter.com/example_usage.html) for more examples using the data (more coming...)
 
 
-
+## Upcoming
+I will publicly host transfer and approval data on the largest ERC-20 tokens in csv, pickle and db format
 
 <br />
 
