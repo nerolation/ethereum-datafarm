@@ -64,7 +64,7 @@ aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 region=eu-central-1
 output=json
 ```
-See the [official documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) for furter infos
+Check out the [official documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) for further infos
 
 #### Requirements:
 
