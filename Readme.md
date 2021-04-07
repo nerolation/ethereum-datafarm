@@ -49,7 +49,7 @@ $ nano .aws/config       => <Configs>
 ```
 
 
-##### The .aws/credentials file might look like the following (replace the aws_access_key_id and aws_secret_access_key with your own details): <br />
+##### The .aws/credentials file might look like the following (replace the *aws_access_key_id* and *aws_secret_access_key* with your own details): <br />
 ```
 [default]
 aws_access_key_id=AKIAIOSFODNN7EXAMPLE
@@ -105,8 +105,6 @@ s3://
 |   |   |   |-- contracts.csv
 ```
 ##### Make sure that contracts.csv has the following structure: (Contract address, custom name, canonical Event, start block, chunksize)
-<br />
-
 ```js
 0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Approval(address,address,uint256),10921410,20000
 0x35A18000230DA775CAc24873d00Ff85BccdeD550,compound_uni,Transfer(address,address,uint256),10921410,20000
