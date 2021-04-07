@@ -1,12 +1,9 @@
 import requests
 import time
 import json
-import sys
 from farm.helpers.Contract import Contract
-from farm.helpers.ContractHelper import load_contracts, animation
+from farm.helpers.ContractLoader import load_contracts, animation
 from farm.helpers.EventHelper import from_hex
-
-
 
 #
 # Farm
