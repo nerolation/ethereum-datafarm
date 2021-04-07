@@ -74,7 +74,7 @@ Check out the [official documentation](https://docs.aws.amazon.com/cli/latest/us
 * Right filesystem structure (see below)
 
 ##### Required Local Filesystem structure:
-```console
+```data
 ethereum-datafarm/
 |-- farm/
 |   |-- helpers/
@@ -132,6 +132,7 @@ Initialize farm and starts scraping data:
 [![asciicast](https://asciinema.org/a/404795.svg)](https://asciinema.org/a/404795)
 ```console
 Logging Output:
+
 $ Timestamp -       Current timestamp
 $ Contract -        Address of contract being processed
 $ Current Chunk -   Block range being processed
