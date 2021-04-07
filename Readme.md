@@ -24,9 +24,7 @@ Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai 
 ```python
 from farm.Farm import *
 
-
 aws_bucket = "ethereum-datahub" # Your AWS bucket
-
 
 # Run
 if __name__=="__main__":
@@ -35,7 +33,7 @@ if __name__=="__main__":
     contracts = load_contracts(aws_bucket=aws_bucket)
 
     # Initialize Farm and get status
-    farm = Farm(contracts=contracts,aws_bucket=aws_bucket).status()
+    farm = Farm(contracts=contracts, aws_bucket=aws_bucket).status()
     farm.start_farming()
 ```
 
