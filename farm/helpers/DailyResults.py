@@ -1,22 +1,19 @@
 from datetime import datetime
 import pandas as pd
 import io
+import os 
 import csv
 import boto3
 
-
 # AWS Stuff
-with open(".aws/credentials.txt") as creds:
-    reader = csv.reader(creds)
-    creds = [i for i in reader]
-s3_res = boto3.resource('s3', aws_access_key_id=creds[0][0], aws_secret_access_key=creds[1][0])
-s3 = boto3.client('s3', aws_access_key_id=creds[0][0], aws_secret_access_key=creds[1][0])
+s3_res = boto3.resource('s3')
+s3 = boto3.client('s3')
 # END AWS Stuff
 
 
 
 class DailyResults():
-    def __init__(self, name, init, deltaToEnd = 100):
+    def __init__(self, name, init):
         self.name = name
         self.init = init
         self.results = pd.DataFrame()
@@ -30,7 +27,7 @@ class DailyResults():
         
     # Try to save the file / sync to AWS if there are two different days of month in the results
     # ...this means that got a transition from one day to another
-    def try_to_save_day(self, results, contract, aws_bucket):
+    def try_to_save_day(self, results, contract, aws_bucket, useBigQuery):
         # This helps for entering recursive mode
         # When the dataFrame is split, it can happen that nothing remains but the empty dataFrame
         if results.empty == True:
@@ -56,7 +53,7 @@ class DailyResults():
             # First day in the dataFrame will be saved
             res = results[results['day'] == firstEntry]
             self.results = self.results.append(res)
-            self.save_results(self.results, contract, aws_bucket)
+            self.save_results(self.results, contract, aws_bucket, useBigQuery)
             contract.fileCounter += 1
             self.results = pd.DataFrame()
             # Second part including other days than the one save will be split and 
@@ -64,7 +61,7 @@ class DailyResults():
             rest = results[results['day'] != firstEntry]
             return self.try_to_save_day(rest, contract, aws_bucket)
             
-    def save_results(self, chunk, contract, aws_bucket):
+    def save_results(self, chunk, contract, aws_bucket, useBigQuery):
         del chunk['day']
         filename = datetime.utcfromtimestamp(chunk.iloc[0][0]).strftime("%d_%m_%Y")
         
@@ -89,11 +86,22 @@ class DailyResults():
                                                                       #  filename))
                 
                 
-        fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format(contract.path,
+        fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format("contracts",
                                                          contract.name,
                                                          contract.method.canonicalExpression.split("(")[0].lower())
         s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
-      
-
+        
+        # BigQuery Upload
+        if useBigQuery:
+            try:
+                client
+            except:
+                # Google Stuff
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
+                client = bigquery.Client()
+            table_id = '{}.{}'.format(contract.name, contract.method)
+            chunk.to_gbq(table_id, if_exists="append", chunksize=10000)
+            
+        
         return True
 

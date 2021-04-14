@@ -51,7 +51,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
             assert(ip != "n")
 
             # Create config file on AWS
-            fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format(contract.path,
+            fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format("contracts",
                                                              contract.name,
                                                              contract.method.simpleExp)
             s3.put_object(Body=str(contract.fromBlock-1),Bucket=aws_bucket,Key=fK)
@@ -121,7 +121,7 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
             
             # Manage `startBlock`
 
-            filename ="config/"+config_location+"/lastSafedBlock/"+contracts[-1].name+"_"+ contracts[-1].method.simpleExp
+            filename ="config/contracts/lastSafedBlock/"+contracts[-1].name+"_"+contracts[-1].method.simpleExp
             # try to load config file with startBlock from AWS
             try :
                 awsfile = s3.get_object(Bucket=aws_bucket, Key = filename+".txt")

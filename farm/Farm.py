@@ -1,6 +1,8 @@
 import requests
 import time
 import json
+import glob
+import re
 from farm.helpers.Contract import Contract
 from farm.helpers.ContractLoader import load_contracts, animation
 from farm.helpers.EventHelper import from_hex
@@ -10,7 +12,7 @@ from farm.helpers.EventHelper import from_hex
 # A farm instance is used to take an array of contracts to loop through it and execute a contract's function
 # 
 class Farm:
-    def __init__(self, contracts, keyPath=".apikey/key.txt", aws_bucket=None):
+    def __init__(self, contracts, keyPath=".apikey/key.txt", aws_bucket=None, useBigQuery=False, canSwitch=False):
         self.contracts = contracts                 # Contracts objs.
         self.contract_length = len(contracts)      # Number of contracts
         self.waitingMonitor = 0                    # Helper to slow down scraping
@@ -19,7 +21,10 @@ class Farm:
         self.latestBlock = self.get_latest_block() # Set latest block
         self.aws_bucket = aws_bucket               # AWS Bucket name
        
-        self.lag = 24                              # Block delay to not risk invalid blocks
+        self.lag = 4000                            # Block delay to not risk invalid blocks
+        self.useBigQuery = useBigQuery             # BigQuery Upload
+        self.canSwitch = canSwitch                 # Specify if the contracts.csv file can be switched
+        self.currentContractPath = self.contracts[0].path
         print("\n")
         animation("Initiating Farm Instance with {} Contracts/Methods".format(len(contracts)))
                 
@@ -35,11 +40,20 @@ class Farm:
             self.adjust_speed()
             # Update latestBlock
             self.latestBlock = self.get_latest_block()
+            
+            if self.canSwitch:
+                print("Switch contract.csv config file")
+                self.currentConfigPath = self.get_next_file()
+                self.contracts=[]
+                start = True
+            else:
+                self.currentConfigPath = self.contracts[0].path
+                start=False
             # Load or remove new contracts
             self.contracts = load_contracts(
                                             self.contracts, 
-                                            start=False, 
-                                            config_location=self.contracts[0].path, 
+                                            start, 
+                                            config_location=self.currentConfigPath, 
                                             aws_bucket=self.aws_bucket
                                            )
             
@@ -59,7 +73,7 @@ class Farm:
                         result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
                         
                         # Try to safe results
-                        i.DailyResults.try_to_save_day(result, i, self.aws_bucket)
+                        i.DailyResults.try_to_save_day(result, i, self.aws_bucket, self.useBigQuery)
                         
                 else:
                     print("Waiting for {}".format(i.name))
@@ -71,8 +85,28 @@ class Farm:
     # Wait some time if every contract reached the latest block
     def adjust_speed(self):
         if self.contract_length == self.waitingMonitor:
+            self.activate_contract_change()
             time.sleep(10)
     
+    # Activate the looping over the contracts.csv files
+    def activate_contract_change(self):
+        self.canSwitch = True
+    
+    # Get next contracts.csv configuration file
+    def get_next_file(self):
+        contractPaths = glob.glob("../contracts*")
+        if len(contractPaths) == 1:
+            return self.currentContractPath
+        currentIndex = contractPaths.index(self.currentContractPath)
+        regexStr = "contracts({})?".format(currentIndex+1)
+        if re.search(regexStr, i).group(1):
+            return "contracts" + str(currentIndex+1)
+        regexStr = "contracts({})?".format(currentIndex+2)
+        if re.search(regexStr, i).group(1):
+            return "contracts" + str(currentIndex+2)
+        else:
+            return "contracts"        
+        
     # Get latest mined block from Etherscan
     def get_latest_block(self):
         q = 'https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey={}'
