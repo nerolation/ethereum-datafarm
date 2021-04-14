@@ -94,19 +94,49 @@ class Farm:
     
     # Get next contracts.csv configuration file
     def get_next_file(self):
-        contractPaths = glob.glob("../contracts*")
+        contractPaths = self.get_config_files()
         if len(contractPaths) == 1:
             return self.currentContractPath
         currentIndex = contractPaths.index(self.currentContractPath)
-        regexStr = "contracts({})?".format(currentIndex+1)
-        if re.search(regexStr, i).group(1):
-            return "contracts" + str(currentIndex+1)
-        regexStr = "contracts({})?".format(currentIndex+2)
-        if re.search(regexStr, i).group(1):
-            return "contracts" + str(currentIndex+2)
-        else:
-            return "contracts"        
-        
+        try:
+            return contractPaths[currentIndex+1]
+        except:
+            return contractPaths[0]
+     
+    
+    def get config_files(self):   
+        allAWSFiles = s3_res.Bucket("ethereum-datahub")
+        allAWSFiles0 = allAWSFiles.objects.filter(Prefix = 'config/contracts/contracts.csv').all()
+        allAWSFiles1 = allAWSFiles.objects.filter(Prefix = 'config/contracts1/contracts.csv').all()
+        allAWSFiles2 = allAWSFiles.objects.filter(Prefix = 'config/contracts2/contracts.csv').all()
+        allAWSFiles3 = allAWSFiles.objects.filter(Prefix = 'config/contracts3/contracts.csv').all()
+        allAWSFiles4 = allAWSFiles.objects.filter(Prefix = 'config/contracts4/contracts.csv').all()
+        try:
+            c0 = [i.key for i in allAWSFiles0][0].split("/")[-1].split(".csv")[0]
+        except:
+            c0 = None
+        try:
+            c1 = [i.key for i in allAWSFiles1][0].split("/")[-1].split(".csv")[0]
+        except:
+            c1 = None
+        try:
+            c2 = [i.key for i in allAWSFiles2][0].split("/")[-1].split(".csv")[0]
+        except:
+            c2 = None
+        try:
+            c3 = [i.key for i in allAWSFiles3][0].split("/")[-1].split(".csv")[0]
+        except:
+            c3 = None
+        try:
+            c4 = [i.key for i in allAWSFiles4][0].split("/")[-1].split(".csv")[0]
+        except:
+            c4 = None
+        c = []
+        for i in [c0,c1,c2,c3,c4]:
+            if i != None:
+                c.append(i)
+        return c
+
     # Get latest mined block from Etherscan
     def get_latest_block(self):
         q = 'https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey={}'
