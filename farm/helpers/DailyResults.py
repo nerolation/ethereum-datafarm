@@ -59,7 +59,7 @@ class DailyResults():
             # Second part including other days than the one save will be split and 
             # are thrown into the function again
             rest = results[results['day'] != firstEntry]
-            return self.try_to_save_day(rest, contract, aws_bucket)
+            return self.try_to_save_day(rest, contract, aws_bucket, useBigQuery)
             
     def save_results(self, chunk, contract, aws_bucket, useBigQuery):
         del chunk['day']
