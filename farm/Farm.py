@@ -104,7 +104,7 @@ class Farm:
             return contractPaths[0]
      
     
-    def get config_files(self):   
+    def get_config_files(self):   
         allAWSFiles = s3_res.Bucket("ethereum-datahub")
         allAWSFiles0 = allAWSFiles.objects.filter(Prefix = 'config/contracts/contracts.csv').all()
         allAWSFiles1 = allAWSFiles.objects.filter(Prefix = 'config/contracts1/contracts.csv').all()
