@@ -4,6 +4,7 @@ import io
 import os 
 import csv
 import boto3
+from google.cloud import bigquery
 
 # AWS Stuff
 s3_res = boto3.resource('s3')
@@ -71,6 +72,18 @@ class DailyResults():
         pickle_buf = io.BytesIO()
         chunk.to_csv(csv_buf, index = False)
         chunk.to_pickle(pickle_buf)
+        
+        # BigQuery Upload
+        if useBigQuery:
+            try:
+                client
+            except:
+                # Google Stuff
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
+                client = bigquery.Client()
+            table_id = '{}.{}'.format(contract.name, contract.method)
+            chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+        
         s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = aws_bucket, 
                       Key = 'contracts/{}_{}/csv/{}.csv'.format(contract.name, 
@@ -90,18 +103,6 @@ class DailyResults():
                                                          contract.name,
                                                          contract.method.canonicalExpression.split("(")[0].lower())
         s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
-        
-        # BigQuery Upload
-        if useBigQuery:
-            try:
-                client
-            except:
-                # Google Stuff
-                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
-                client = bigquery.Client()
-            table_id = '{}.{}'.format(contract.name, contract.method)
-            chunk.to_gbq(table_id, if_exists="append", chunksize=10000)
-            
         
         return True
 
