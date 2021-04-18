@@ -6,7 +6,7 @@ import re
 from farm.helpers.Contract import Contract
 from farm.helpers.ContractLoader import load_contracts, animation
 from farm.helpers.EventHelper import from_hex
-from helpers.DailyResults import s3_res
+from farm.helpers.DailyResults import s3_res
 
 #
 # Farm
