@@ -82,7 +82,7 @@ class DailyResults():
                 # Google Stuff
                 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
                 client = bigquery.Client()
-            table_id = '{}.{}'.format(contract.name, contract.method.canonicalExpression)
+            table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
         
         s3.put_object(Body = csv_buf.getvalue(), 
