@@ -84,6 +84,7 @@ class DailyResults():
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+            print(" -- BigQuery Sync successfull --)
         
         s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = aws_bucket, 
@@ -104,6 +105,6 @@ class DailyResults():
                                                          contract.name,
                                                          contract.method.canonicalExpression.split("(")[0].lower())
         s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
-        
+        print(" -- AWS Sync successfull --)
         return True
 
