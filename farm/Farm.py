@@ -43,9 +43,10 @@ class Farm:
             self.latestBlock = self.get_latest_block()
             
             if self.canSwitch:
-                print("Switch contract.csv config file")
+                animation("Switch contract.csv config file")
                 self.currentConfigPath = self.get_next_file()
                 self.contracts=[]
+                animation("File switched")
                 start = True
             else:
                 self.currentConfigPath = self.contracts[0].path
@@ -86,18 +87,18 @@ class Farm:
     # Wait some time if every contract reached the latest block
     def adjust_speed(self):
         if self.contract_length == self.waitingMonitor:
-            self.activate_contract_change()
+            self.try_activate_contract_change()
             time.sleep(10)
     
     # Activate the looping over the contracts.csv files
-    def activate_contract_change(self):
-        self.canSwitch = True
+    def try_activate_contract_change(self):
+        contractPaths = self.get_config_files()
+        if len(contractPaths) > 1:
+            self.canSwitch = True
     
     # Get next contracts.csv configuration file
     def get_next_file(self):
         contractPaths = self.get_config_files()
-        if len(contractPaths) == 1:
-            return self.currentContractPath
         currentIndex = contractPaths.index(self.currentContractPath)
         try:
             return contractPaths[currentIndex+1]
