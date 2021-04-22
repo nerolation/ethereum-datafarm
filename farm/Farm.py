@@ -145,17 +145,22 @@ class Farm:
         try:
             return from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
         except:
-            print("Except latest block")
+            print("Something failed, while getting the latest block:")
             q = q.format(self.KEY)
             if "Bad Gateway" in str(q):
                 print("Bad Gateway - latest Block")
                 time.sleep(10)
                 return self.latestBlock
-            q = q.content
-            q = requests.get(q)
-            print(q)                
-            q = json.loads(q)['result']
-            lB = from_hex(q)
+            print(q)
+            try:
+                q = q.content
+                q = requests.get(q)
+                print(q)                
+                q = json.loads(q)['result']
+                lB = from_hex(q)
+            except:
+                lB = self.latestBlock
+            time.sleep(10)
             return lB            
     
     # Wait if getting very close (self.lag) to the latestBlock
