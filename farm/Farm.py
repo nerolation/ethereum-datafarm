@@ -114,23 +114,23 @@ class Farm:
         allAWSFiles3 = allAWSFiles.objects.filter(Prefix = 'config/contracts3/contracts.csv').all()
         allAWSFiles4 = allAWSFiles.objects.filter(Prefix = 'config/contracts4/contracts.csv').all()
         try:
-            c0 = [i.key for i in allAWSFiles0][0].split("/")[-1].split(".csv")[0]
+            c0 = [i.key for i in allAWSFiles0][0].split("/")[-2]
         except:
             c0 = None
         try:
-            c1 = [i.key for i in allAWSFiles1][0].split("/")[-1].split(".csv")[0]
+            c1 = [i.key for i in allAWSFiles1][0].split("/")[-2]
         except:
             c1 = None
         try:
-            c2 = [i.key for i in allAWSFiles2][0].split("/")[-1].split(".csv")[0]
+            c2 = [i.key for i in allAWSFiles2][0].split("/")[-2]
         except:
             c2 = None
         try:
-            c3 = [i.key for i in allAWSFiles3][0].split("/")[-1].split(".csv")[0]
+            c3 = [i.key for i in allAWSFiles3][0].split("/")[-2]
         except:
             c3 = None
         try:
-            c4 = [i.key for i in allAWSFiles4][0].split("/")[-1].split(".csv")[0]
+            c4 = [i.key for i in allAWSFiles4][0].split("/")[-2]
         except:
             c4 = None
         c = []
