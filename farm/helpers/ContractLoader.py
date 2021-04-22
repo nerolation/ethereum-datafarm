@@ -47,7 +47,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
             df = pd.read_csv(s3.get_object(Bucket=aws_bucket, Key=fileKey)['Body'])  
             contract.fromBlock = df.iloc[-1]['blocknumber']+1
             print("'FromBlock' successfully loaded from AWS")
-            ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contracts[-1].name, contracts[-1].fromBlock))
+            ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contract.name, contract.fromBlock))
             assert(ip != "n")
 
             # Create config file on AWS
