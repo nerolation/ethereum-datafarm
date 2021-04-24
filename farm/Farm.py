@@ -42,7 +42,6 @@ class Farm:
     def start_farming(self):
         # Endless == True if end.txt == False => allows to safely end the program at the beginning of an iteration
         endless = True
-        self.log_header()
         while(endless):
             endless = self.safe_end()
             # Slow down program if the latest block is reached for every token
@@ -70,7 +69,9 @@ class Farm:
                                             aws_bucket=self.aws_bucket,
                                             secureStart=self.secureSwitch
                                            )
-            
+            if start:
+                self.log_header()
+                self.contract_length=len(self.contracts)
             # Loop over the list of contracts
             for i in self.contracts: 
                 # If latestBlock is reached => wait
@@ -98,7 +99,7 @@ class Farm:
     
     # Wait some time if every contract reached the latest block
     def adjust_speed(self):
-        if self.contract_length == self.waitingMonitor:
+        if self.contract_length == self.waitingMonitor and self.waitingMonitor != 0:
             self.try_activate_contract_change()
             time.sleep(10)
     
