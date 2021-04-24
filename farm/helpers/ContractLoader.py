@@ -142,7 +142,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                 
             # else, if already safed results in AWS => tset `startBlock` to  last safed Block   
             elif existing_aws_results(contracts[-1], aws_bucket=aws_bucket):
-                restore_fromBlock_from_AWS(contracts[-1],aws_bucket=aws_bucket, secureStart)
+                restore_fromBlock_from_AWS(contracts[-1],aws_bucket=aws_bucket,secureStart=secureStart)
                 
             # else, take `startBlock`from contracts file
             else:
