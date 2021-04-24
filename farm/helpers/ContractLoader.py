@@ -47,7 +47,8 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
             df = pd.read_csv(s3.get_object(Bucket=aws_bucket, Key=fileKey)['Body'])  
             contract.fromBlock = df.iloc[-1]['blocknumber']+1
             print("'FromBlock' successfully loaded from AWS")
-            ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contract.name, contract.fromBlock))
+            if secureStart == True:
+                ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contract.name, contract.fromBlock))
             assert(ip != "n")
 
             # Create config file on AWS
@@ -74,7 +75,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
 #
 # Create `Contract` instances that are used in the farm   
 #    
-def load_contracts(contracts=[], start=True, config_location="contracts", aws_bucket=None):
+def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucket=None,secureStart=True):
     # If first call of function => print header
     if start:
         animation("Loading new contracts")
@@ -133,7 +134,8 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
                 newStartBlock = s3.get_object(Bucket=aws_bucket, Key = filename+".txt")['Body'].read()
                 newStartBlock = int(newStartBlock.decode("utf-8"))
                 contracts[-1].fromBlock = newStartBlock+1
-                ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contracts[-1].name, contracts[-1].fromBlock))
+                if secureStart == True:
+                    ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contracts[-1].name, contracts[-1].fromBlock))
                 assert(ip != "n")
                 print("`Startblock` overwritten for {} to Block {:,}\n".format(contracts[-1].name,
                                                                                contracts[-1].fromBlock))
@@ -144,7 +146,8 @@ def load_contracts(contracts=[], start=True, config_location="contracts", aws_bu
                 
             # else, take `startBlock`from contracts file
             else:
-                ip = input("FromBlock not overwritten for {}. Please verify (y/n)\n".format(contracts[-1].name))
+                if secureStart == True:
+                    ip = input("FromBlock not overwritten for {}. Please verify (y/n)\n".format(contracts[-1].name))
                 assert(ip != "n")
                 time.sleep(1)
     return contracts
