@@ -18,7 +18,7 @@ class Farm:
                  keyPath=".apikey/key.txt", 
                  aws_bucket=None, 
                  useBigQuery=False, 
-                 canSwitch=False
+                 canSwitch=False,
                  secureSwitch=True
                 ):
         self.contracts = contracts                 # Contracts objs.
