@@ -32,6 +32,7 @@ class Farm:
         self.lag = 4000                            # Block delay to not risk invalid blocks
         self.useBigQuery = useBigQuery             # BigQuery Upload
         self.canSwitch = canSwitch                 # Specify if the contracts.csv file can be switched
+        self.secureSwitch = secureSwitch           # no confirmation needed after config-file switch
         self.currentContractPath = self.contracts[0].path
         print("\n")
         animation("Initiating Farm Instance with {} Contracts/Methods".format(len(contracts)))
