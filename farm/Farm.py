@@ -13,7 +13,14 @@ from farm.helpers.DailyResults import s3_res
 # A farm instance is used to take an array of contracts to loop through it and execute a contract's function
 # 
 class Farm:
-    def __init__(self, contracts, keyPath=".apikey/key.txt", aws_bucket=None, useBigQuery=False, canSwitch=False):
+    def __init__(self, 
+                 contracts, 
+                 keyPath=".apikey/key.txt", 
+                 aws_bucket=None, 
+                 useBigQuery=False, 
+                 canSwitch=False
+                 secureSwitch=True
+                ):
         self.contracts = contracts                 # Contracts objs.
         self.contract_length = len(contracts)      # Number of contracts
         self.waitingMonitor = 0                    # Helper to slow down scraping
@@ -47,7 +54,10 @@ class Farm:
                 self.currentConfigPath = self.get_next_file()
                 self.contracts=[]
                 animation("File switched")
-                start = True
+                start=True
+                self.secureSwitch=False
+                self.waitingMonitor=0 # Reset
+                self.canSwitch=False  # Reset
             else:
                 self.currentConfigPath = self.contracts[0].path
                 start=False
@@ -56,7 +66,8 @@ class Farm:
                                             self.contracts, 
                                             start, 
                                             config_location=self.currentConfigPath, 
-                                            aws_bucket=self.aws_bucket
+                                            aws_bucket=self.aws_bucket,
+                                            secureStart=self.secureSwitch
                                            )
             
             # Loop over the list of contracts
