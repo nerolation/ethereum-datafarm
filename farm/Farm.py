@@ -42,6 +42,7 @@ class Farm:
     def start_farming(self):
         # Endless == True if end.txt == False => allows to safely end the program at the beginning of an iteration
         endless = True
+        self.log_header()
         while(endless):
             endless = self.safe_end()
             # Slow down program if the latest block is reached for every token
@@ -70,7 +71,6 @@ class Farm:
                                             secureStart=self.secureSwitch
                                            )
             if start:
-                self.log_header()
                 self.contract_length=len(self.contracts)
             # Loop over the list of contracts
             for i in self.contracts: 
