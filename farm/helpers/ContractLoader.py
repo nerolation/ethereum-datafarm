@@ -33,7 +33,7 @@ def existing_aws_results(contract, aws_bucket=None):
     return False
 
 # Get last safed block and set it as `fromBlock` as starting point
-def restore_fromBlock_from_AWS(contract, aws_bucket=None):
+def restore_fromBlock_from_AWS(contract, aws_bucket=None, secureStart):
     animation("Restoring last safed Block from AWS")
     
     # Loop over dates backwards, starting from today
@@ -142,7 +142,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                 
             # else, if already safed results in AWS => tset `startBlock` to  last safed Block   
             elif existing_aws_results(contracts[-1], aws_bucket=aws_bucket):
-                restore_fromBlock_from_AWS(contracts[-1],aws_bucket=aws_bucket)
+                restore_fromBlock_from_AWS(contracts[-1],aws_bucket=aws_bucket, secureStart)
                 
             # else, take `startBlock`from contracts file
             else:
