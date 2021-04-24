@@ -49,7 +49,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
             print("'FromBlock' successfully loaded from AWS")
             if secureStart == True:
                 ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contract.name, contract.fromBlock))
-            assert(ip != "n")
+                assert(ip != "n")
 
             # Create config file on AWS
             fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format("contracts",
@@ -130,13 +130,13 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                 awsfile = False
             # if config file => set `startBlock`
             if awsfile:
-                print("Loading `startBlock` for {} from AWS config file".format(contracts[-1].name))
+                animation("Loading `startBlock` for {} from AWS config file".format(contracts[-1].name))
                 newStartBlock = s3.get_object(Bucket=aws_bucket, Key = filename+".txt")['Body'].read()
                 newStartBlock = int(newStartBlock.decode("utf-8"))
                 contracts[-1].fromBlock = newStartBlock+1
                 if secureStart == True:
                     ip = input("Overwritting `startBlock` for {} to {} - please verify (y/n)".format(contracts[-1].name, contracts[-1].fromBlock))
-                assert(ip != "n")
+                    assert(ip != "n")
                 print("`Startblock` overwritten for {} to Block {:,}\n".format(contracts[-1].name,
                                                                                contracts[-1].fromBlock))
                 time.sleep(1)
@@ -148,6 +148,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
             else:
                 if secureStart == True:
                     ip = input("FromBlock not overwritten for {}. Please verify (y/n)\n".format(contracts[-1].name))
-                assert(ip != "n")
+                    assert(ip != "n")
+                print("FromBlock for {} taken from config file".format(contracts[-1].name))
                 time.sleep(1)
     return contracts
