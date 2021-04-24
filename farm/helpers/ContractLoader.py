@@ -57,7 +57,7 @@ def restore_fromBlock_from_AWS(contract, aws_bucket=None):
                                                              contract.method.simpleExp)
             s3.put_object(Body=str(contract.fromBlock-1),Bucket=aws_bucket,Key=fK)
             print("FromBlock' stored on AWS\n")
-            time.sleep(1)
+            time.sleep(2)
             return True
 
         except ClientError as ex:
@@ -130,7 +130,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                 awsfile = False
             # if config file => set `startBlock`
             if awsfile:
-                animation("Loading `startBlock` for {} from AWS config file".format(contracts[-1].name))
+                print("Loading `startBlock` for {} from AWS config file".format(contracts[-1].name))
                 newStartBlock = s3.get_object(Bucket=aws_bucket, Key = filename+".txt")['Body'].read()
                 newStartBlock = int(newStartBlock.decode("utf-8"))
                 contracts[-1].fromBlock = newStartBlock+1
@@ -139,7 +139,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                     assert(ip != "n")
                 print("`Startblock` overwritten for {} to Block {:,}\n".format(contracts[-1].name,
                                                                                contracts[-1].fromBlock))
-                time.sleep(1)
+                
             # else, if already safed results in AWS => tset `startBlock` to  last safed Block   
             elif existing_aws_results(contracts[-1], aws_bucket=aws_bucket):
                 restore_fromBlock_from_AWS(contracts[-1],aws_bucket=aws_bucket)
@@ -150,5 +150,5 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
                     ip = input("FromBlock not overwritten for {}. Please verify (y/n)\n".format(contracts[-1].name))
                     assert(ip != "n")
                 print("FromBlock for {} taken from config file".format(contracts[-1].name))
-                time.sleep(1)
+                time.sleep(2)
     return contracts
