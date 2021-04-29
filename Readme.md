@@ -2,15 +2,17 @@
 
 The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in .csv and .pickle format.
 
+###### 29-04-2021 The ethereum-datafarm is still a project in progress, the latest feature added was BigQuery support and a flexible switch between contract config files, which allows to run the application with extremely low memory requirements.
+
 ## Features:
 * Scraps every type of event data from pre-defined contracts
-* Saves each day in a separate file
+* Saves each day in a separate file and/or syncs to Google BigQuery
 * No local or [Infura](https://infura.io/?utm_source=Nerolation_Github&utm_medium=ethereum-datafarm) node needed => Etherscan.io API is used
 * Possibility to add or remove contracts to/from the queue during runtime
 * Possibility to securely terminate execution (config/end.txt file)
 * Already pre-configured for multiple events used by various contracts
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
-* .Csv and .pickle support
+* .Csv, .pickle and SQL (GBQ) support
 * Throttles down the number of requests to the API when the latest block is reached
 <br />
 
@@ -18,6 +20,10 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 ![image](sample_output/png/sample_output.png)
 Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai transfers
 <br />
+
+## Example dashboard
+[Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
+[ERC-20s Dasboard](https://toniwahrstaetter.com/token-transfers.html) (mobile only)
 
 ## Usage
 
@@ -154,7 +160,7 @@ Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 
 
 ## Upcoming
-I will publicly host transfer and approval data on the largest ERC-20 tokens in csv, pickle and db format
+Collect events directly from the mempool - the challange might be to also include information such as when the transaction was first seen and if it finally made it into a block
 
 <br />
 
