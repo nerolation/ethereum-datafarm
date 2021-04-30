@@ -44,6 +44,9 @@ def get_header_columns(methodId):
         return ['timestamp','blocknumber','txhash','txindex','logindex',
                 'minter', "to" , 'value', 'gas_price', 'gas_used']
     
+    elif methodId in ["0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5"]: # DepositEvent(bytes,bytes,bytes,bytes,bytes)
+        return ['timestamp','blocknumber','txhash','txindex','logindex',
+                'public_key', "withdrawal_credentials" , 'amount', 'signature', 'index', 'gas_price', 'gas_used']
     
 
 
@@ -110,6 +113,20 @@ def prepare_event(e, methodId):
         da2 = from_hex('0x' + e['data'][-20:])
         return [ts,bn,th,ti,li,da1,da2,gp,gu]
     
+    elif methodId in ["0x649bbc62d0e31342afea4e5cd82d4049e7e1ee912fc0889aa790803be39038c5"]: # DepositEvent
+        bn = from_hex(e['blockNumber'])
+        ts = from_hex(e['timeStamp'])
+        th = e['transactionHash']
+        ti = from_hex(e['transactionIndex'])
+        gp = from_hex(e['gasPrice'])
+        gu = from_hex(e['gasUsed'])
+        li = from_hex(e['logIndex'])
+        pk = e['data'][386:482]
+        si = e['data'][834:1026]
+        cr = e['data'][578:642]
+        am = e['data'][706:722]
+        ix = e['data'][1090:1106]
+        return [ts,bn,th,ti,li,pk,cr,am,si,ix,gp,gu]
     
     else:
         bn = from_hex(e['blockNumber'])
