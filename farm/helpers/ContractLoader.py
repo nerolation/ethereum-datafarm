@@ -147,7 +147,7 @@ def load_contracts(contracts=[],start=True,config_location="contracts",aws_bucke
             # else, take `startBlock`from contracts file
             else:
                 if secureStart == True:
-                    ip = input("FromBlock not overwritten for {}. Please verify (y/n)\n".format(contracts[-1].name))
+                    ip = input("FromBlock not overwritten for {}. Please verify (y/n)".format(contracts[-1].name))
                     assert(ip != "n")
                 print("FromBlock for {} taken from config file".format(contracts[-1].name))
                 time.sleep(2)

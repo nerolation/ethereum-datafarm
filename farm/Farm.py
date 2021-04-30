@@ -6,7 +6,7 @@ import re
 from farm.helpers.Contract import Contract
 from farm.helpers.ContractLoader import load_contracts, animation
 from farm.helpers.EventHelper import from_hex
-from farm.helpers.DailyResults import s3_res
+from farm.helpers.DailyResults import s3_res, datetime, timedelta
 
 #
 # Farm
@@ -55,6 +55,8 @@ class Farm:
                 self.currentConfigPath = self.get_next_file()
                 self.contracts=[]
                 animation("File switched")
+                animation("Waiting until {} to proceed".format(get_future_startTime()))
+                time.sleep(86400/2)
                 start=True
                 self.secureSwitch=False
                 self.waitingMonitor=0 # Reset
@@ -96,6 +98,11 @@ class Farm:
                         i.shouldWait = True
                         self.waitingMonitor += 1
                     self.wait(i)
+                      
+    def get_future_startTime():
+        return datetime.strftime(datetime.now()+timedelta(hours=12), "%H:%M:%S")
+        
+                      
     
     # Wait some time if every contract reached the latest block
     def adjust_speed(self):
