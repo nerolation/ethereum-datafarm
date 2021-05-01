@@ -55,7 +55,7 @@ class Farm:
                 self.currentConfigPath = self.get_next_file()
                 self.contracts=[]
                 animation("File switched")
-                animation("Waiting until {} to proceed".format(get_future_startTime()))
+                animation("Waiting until {} to proceed".format(self.get_future_startTime()))
                 time.sleep(86400/2)
                 start=True
                 self.secureSwitch=False
@@ -99,7 +99,7 @@ class Farm:
                         self.waitingMonitor += 1
                     self.wait(i)
                       
-    def get_future_startTime():
+    def get_future_startTime(self):
         return datetime.strftime(datetime.now()+timedelta(hours=12), "%H:%M:%S")
         
                       
