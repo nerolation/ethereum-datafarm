@@ -83,7 +83,21 @@ class DailyResults():
                 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
-            chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+            if contract.method.simpleExp.lower() == "approval":
+                approval_schema = [{'name': 'timestamp', 'type': 'INTEGER'},
+                                   {'name': 'blocknumber', 'type': 'INTEGER'},
+                                   {'name': 'txhash', 'type': 'STRING'},
+                                   {'name': 'txindex', 'type': 'INTEGER'},
+                                   {'name': 'logindex', 'type': 'INTEGER'},
+                                   {'name': 'txfrom', 'type': 'STRING'},
+                                   {'name': 'txto', 'type': 'STRING'},
+                                   {'name': 'txvalue', 'type': 'STRING'},
+                                   {'name': 'gas_price', 'type': 'INTEGER'},
+                                   {'name': 'gas_used', 'type': 'INTEGER'}
+                                  ]
+                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=approval_schema)
+            else:
+                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
             print(" -- BigQuery Sync successfull --")
         
         s3.put_object(Body = csv_buf.getvalue(), 
