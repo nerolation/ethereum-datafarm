@@ -52,7 +52,7 @@ class Farm:
             
             if self.canSwitch:
                 animation("Switch contract.csv config file")
-                self.currentConfigPath = self.get_next_file()
+                self.currentContractPath = self.get_next_file()
                 self.contracts=[]
                 animation("File switched")
                 animation("Waiting until {} to proceed".format(self.get_future_startTime()))
@@ -62,13 +62,13 @@ class Farm:
                 self.waitingMonitor=0 # Reset
                 self.canSwitch=False  # Reset
             else:
-                self.currentConfigPath = self.contracts[0].path
+                self.currentContractPath = self.contracts[0].path
                 start=False
             # Load or remove new contracts
             self.contracts = load_contracts(
                                             self.contracts, 
                                             start, 
-                                            config_location=self.currentConfigPath, 
+                                            config_location=self.currentContractPath, 
                                             aws_bucket=self.aws_bucket,
                                             secureStart=self.secureSwitch
                                            )
