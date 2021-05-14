@@ -1,3 +1,5 @@
+import json, requests
+
 def from_hex(string):
     if str(string) == '0x':
         return 0
@@ -48,9 +50,12 @@ def get_header_columns(methodId):
         return ['timestamp','blocknumber','txhash','txindex','logindex',
                 'public_key', "withdrawal_credentials" , 'amount', 'signature', 'index', 'gas_price', 'gas_used']
     
+    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # Deposit TORN
+        return ['timestamp','blocknumber','txhash','txindex','logindex',
+                'from', "value" , 'nonce', 'gas_price', 'gas_used']
 
 
-def prepare_event(e, methodId):
+def prepare_event(e, methodId, KEY):
     if methodId in ["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef", # Transfer
                     "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",  # Approval
                     "0xab8530f87dc9b59234c4623bf917212bb2536d647574c8e7e5da92c2ede0c9f8"
@@ -127,6 +132,27 @@ def prepare_event(e, methodId):
         am = e['data'][706:722]
         ix = e['data'][1090:1106]
         return [ts,bn,th,ti,li,pk,cr,am,si,ix,gp,gu]
+    
+    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # DepositEvent TORN 10ETH
+        bn = from_hex(e['blockNumber'])
+        ts = from_hex(e['timeStamp'])
+        th = e['transactionHash']
+        ti = from_hex(e['transactionIndex'])
+        gp = from_hex(e['gasPrice'])
+        gu = from_hex(e['gasUsed'])
+        li = from_hex(e['logIndex'])
+        
+        # Extra Query to get the initiator of the tx
+        _API = "https://api.etherscan.io/api?{}"
+        _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
+        _queryString = _API.format(_QUERY.format(th,KEY))
+        _res = json.loads(requests.get(_queryString).content)['result']
+        
+        tf = _res["from"]
+        no = from_hex(_res["nonce"])
+        va = from_hex(_res['value'])
+        
+        return [ts,bn,th,ti,li,tf,va,no,gp,gu]
     
     else:
         bn = from_hex(e['blockNumber'])

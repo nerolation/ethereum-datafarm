@@ -61,10 +61,10 @@ class Contract:
         return
     
     # Prepare raw request data to be safed as csv
-    def mine(self, query, methodId):
+    def mine(self, query, methodId, KEY):
         chunk = []
         for e in query:
-            toChunk = prepare_event(e, methodId)
+            toChunk = prepare_event(e, methodId, KEY)
             chunk.append(toChunk)
         return chunk
     

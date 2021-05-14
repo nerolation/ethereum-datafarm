@@ -85,7 +85,7 @@ class Farm:
                         i.increase_chunksize()
                     if query:
                         # Prepare raw request for further processing
-                        chunk = i.mine(query, i.method.id)
+                        chunk = i.mine(query, i.method.id, self.KEY)
                         print(i.log_to_console(chunk))
                         result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
                         
