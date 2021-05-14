@@ -1,4 +1,4 @@
-import json, requests
+import json, requests, time
 
 def from_hex(string):
     if str(string) == '0x':
@@ -151,7 +151,7 @@ def prepare_event(e, methodId, KEY):
         _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
         _queryString = _API.format(_QUERY.format(th,KEY))
         _res = json.loads(requests.get(_queryString).content)['result']
-        
+        time.sleep(0.1)
         tf = _res["from"]
         no = from_hex(_res["nonce"])
         va = from_hex(_res['value'])
@@ -174,7 +174,7 @@ def prepare_event(e, methodId, KEY):
         _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
         _queryString = _API.format(_QUERY.format(th,KEY))
         _res = json.loads(requests.get(_queryString).content)['result']
-        
+        time.sleep(0.1)
         tf = _res["from"]
         no = from_hex(_res["nonce"])
         va = from_hex(_res['value'])
