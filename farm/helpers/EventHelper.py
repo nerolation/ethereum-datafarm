@@ -50,9 +50,13 @@ def get_header_columns(methodId):
         return ['timestamp','blocknumber','txhash','txindex','logindex',
                 'public_key', "withdrawal_credentials" , 'amount', 'signature', 'index', 'gas_price', 'gas_used']
     
-    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # Deposit TORN
+    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # Deposit TORN ETH
         return ['timestamp','blocknumber','txhash','txindex','logindex',
                 'from', "value" , 'nonce', 'gas_price', 'gas_used']
+    
+    elif methodId in ["0xe9e508bad6d4c3227e881ca19068f099da81b5164dd6d62b2eaf1e8bc6c34931"]: # Withdraw TORN ETH
+        return ['timestamp','blocknumber','txhash','txindex','logindex',
+                'relayer',"to", "value" , 'nonce', 'gas_price', 'gas_used']
 
 
 def prepare_event(e, methodId, KEY):
@@ -133,7 +137,7 @@ def prepare_event(e, methodId, KEY):
         ix = e['data'][1090:1106]
         return [ts,bn,th,ti,li,pk,cr,am,si,ix,gp,gu]
     
-    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # DepositEvent TORN 10ETH
+    elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # DepositEvent TORN ETH
         bn = from_hex(e['blockNumber'])
         ts = from_hex(e['timeStamp'])
         th = e['transactionHash']
@@ -153,6 +157,29 @@ def prepare_event(e, methodId, KEY):
         va = from_hex(_res['value'])
         
         return [ts,bn,th,ti,li,tf,va,no,gp,gu]
+    
+    elif methodId in ["0xe9e508bad6d4c3227e881ca19068f099da81b5164dd6d62b2eaf1e8bc6c34931"]: # WithdrawEvent TORN ETH
+        bn = from_hex(e['blockNumber'])
+        ts = from_hex(e['timeStamp'])
+        th = e['transactionHash']
+        ti = from_hex(e['transactionIndex'])
+        gp = from_hex(e['gasPrice'])
+        gu = from_hex(e['gasUsed'])
+        li = from_hex(e['logIndex'])
+        
+        tt = "0x"+e['data'][26:66]
+        
+        # Extra Query to get the initiator of the tx
+        _API = "https://api.etherscan.io/api?{}"
+        _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
+        _queryString = _API.format(_QUERY.format(th,KEY))
+        _res = json.loads(requests.get(_queryString).content)['result']
+        
+        tf = _res["from"]
+        no = from_hex(_res["nonce"])
+        va = from_hex(_res['value'])
+        
+        return [ts,bn,th,ti,li,tf,tt,va,no,gp,gu]
     
     else:
         bn = from_hex(e['blockNumber'])
