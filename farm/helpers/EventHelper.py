@@ -151,6 +151,7 @@ def prepare_event(e, methodId, KEY):
         _API = "https://api.etherscan.io/api?{}"
         _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
         _queryString = _API.format(_QUERY.format(th,KEY))
+        _res=None
         while _res == None:
             try:
                 _res = json.loads(requests.get(_queryString).content) 
