@@ -1,4 +1,5 @@
 import json, requests, time
+from json.decoder import JSONDecodeError
 
 def from_hex(string):
     if str(string) == '0x':
@@ -173,7 +174,17 @@ def prepare_event(e, methodId, KEY):
         _API = "https://api.etherscan.io/api?{}"
         _QUERY = "module=proxy&action=eth_getTransactionByHash&txhash={}&apikey={}"
         _queryString = _API.format(_QUERY.format(th,KEY))
-        _res = json.loads(requests.get(_queryString).content)['result']
+        _res=None
+        while _res == None:
+            try:
+                _res = json.loads(requests.get(_queryString).content) 
+            except JSONDecodeError:
+                _res=None
+                print(requests.get(_queryString).content)
+                print("Some strange JSONDecodeError")
+                time.sleep(1)
+        
+        _res = _res['result']
         time.sleep(0.1)
         tf = _res["from"]
         no = from_hex(_res["nonce"])
