@@ -23,6 +23,7 @@ Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai 
 
 ## Example dashboard
 [Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
+
 [ERC-20s Dasboard](https://toniwahrstaetter.com/token-transfers.html) (mobile only)
 
 ## Usage
