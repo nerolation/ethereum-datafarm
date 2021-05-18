@@ -1,6 +1,6 @@
 # ethereum-datafarm
 
-The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in .csv and .pickle format.
+The ethereum-datafarm aims to provide researches quick access to Ethereum blockchain data by offering an easy-to-use interface to scrap event logs from contracts and save them in .csv and .pickle format and/or directly sync to Google BigQuery.
 
 ###### 29-04-2021 The ethereum-datafarm is still a project in progress, the latest feature added was BigQuery support and a flexible switch between contract config files, which allows to run the application with extremely low memory requirements.
 
