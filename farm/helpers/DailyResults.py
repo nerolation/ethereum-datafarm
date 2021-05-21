@@ -100,16 +100,18 @@ class DailyResults():
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
             print(" -- BigQuery Sync successfull --")
         
-        s3.put_object(Body = csv_buf.getvalue(), 
+        res=s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = aws_bucket, 
                       Key = 'contracts/{}_{}/csv/{}.csv'.format(contract.name, 
                                                                 contract.method.canonicalExpression.split("(")[0].lower(),
                                                                 filename))
-        s3.put_object(Body = pickle_buf.getvalue(), 
+        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
+        res=s3.put_object(Body = pickle_buf.getvalue(), 
                       Bucket = aws_bucket, 
                       Key = 'contracts/{}_{}/pickle/{}.pickle'.format(contract.name, 
                                                                       contract.method.canonicalExpression.split("(")[0].lower(),
                                                                       filename))
+        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
         # print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
                                                                         # contract.method.canonicalExpression.split("(")[0].lower(),
                                                                       #  filename))
@@ -118,7 +120,8 @@ class DailyResults():
         fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format("contracts",
                                                          contract.name,
                                                          contract.method.canonicalExpression.split("(")[0].lower())
-        s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
+        res = s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
+        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
         print(" -- AWS Sync successfull --")
         return True
 
