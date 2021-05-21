@@ -91,6 +91,8 @@ class Farm:
                         
                         # Try to safe results
                         i.DailyResults.try_to_save_day(result, i, self.aws_bucket, self.useBigQuery)
+                    else:
+                        print("No records for {}".format(i.name)
                         
                 else:
                     print("Waiting for {}".format(i.name))
