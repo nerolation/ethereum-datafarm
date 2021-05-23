@@ -105,6 +105,9 @@ ethereum-datafarm/
 |-- config/
 |   |-- end.txt
 |
+|-- logs/                  // optional, if there, then logging is activated
+|   |-- datafarm.log
+|
 |-- README
 ```
 ##### Required S3 Bucket structure:
@@ -113,6 +116,8 @@ s3://
 |-- <Your Bucket's name>/
 |   |-- config/
 |   |   |-- contracts/
+|   |   |   |-- contracts.csv
+|   |   |-- contracts2/    // optional, if there, then fileswitch is activated
 |   |   |   |-- contracts.csv
 ```
 ##### Make sure that contracts.csv has the following structure: (Contract address, custom name, canonical Event, start block, chunksize)
@@ -159,9 +164,8 @@ Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 
 [Click here](https://toniwahrstaetter.com/example_usage.html) for more examples using the data (more coming...)
 
-
-## Upcoming
-Collect events directly from the mempool - the challange might be to also include information such as when the transaction was first seen and if it finally made it into a block
+## Next Steps
+* Safely terminated execution with KeyboardInterrupt commands
 
 <br />
 
