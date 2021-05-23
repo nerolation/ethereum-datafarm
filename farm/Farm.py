@@ -4,9 +4,10 @@ import json
 import glob
 import re
 from farm.helpers.Contract import Contract
-from farm.helpers.ContractLoader import load_contracts, animation
+from farm.helpers.ContractLoader import load_contracts
 from farm.helpers.EventHelper import from_hex
 from farm.helpers.DailyResults import s3_res, datetime, timedelta
+from farm.helpers.Logger import globalLogger as gl 
 
 #
 # Farm
@@ -16,6 +17,7 @@ class Farm:
     def __init__(self, 
                  contracts, 
                  keyPath=".apikey/key.txt", 
+                 logging=True,
                  aws_bucket=None, 
                  useBigQuery=False, 
                  canSwitch=False,
@@ -34,8 +36,7 @@ class Farm:
         self.canSwitch = canSwitch                 # Specify if the contracts.csv file can be switched
         self.secureSwitch = secureSwitch           # no confirmation needed after config-file switch
         self.currentContractPath = self.contracts[0].path
-        print("\n")
-        animation("Initiating Farm Instance with {} Contracts/Methods".format(len(contracts)))
+        gl("\nInitiating Farm Instance with {} Contracts/Methods".format(len(contracts)), animated=True)
                 
     
     # Main function
@@ -51,11 +52,11 @@ class Farm:
             self.latestBlock = self.get_latest_block()
             
             if self.canSwitch:
-                animation("Switch contract.csv config file")
+                gl("Switch contract.csv config file", animated=True)
                 self.currentContractPath = self.get_next_file()
                 self.contracts=[]
-                animation("File switched")
-                animation("Waiting until {} to proceed".format(self.get_future_startTime()))
+                gl("File switched", animated=True)
+                gl("Waiting until {} to proceed".format(self.get_future_startTime()), animated=True)
                 time.sleep(86400/2)
                 start=True
                 self.secureSwitch=False
@@ -86,16 +87,16 @@ class Farm:
                     if query:
                         # Prepare raw request for further processing
                         chunk = i.mine(query, i.method.id, self.KEY)
-                        print(i.log_to_console(chunk))
+                        gl(i.log_to_console(chunk))
                         result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
                         
                         # Try to safe results
                         i.DailyResults.try_to_save_day(result, i, self.aws_bucket, self.useBigQuery)
                     else:
-                        print("No records for {}".format(i.name))
+                        gl("No records for {}".format(i.name))
                         
                 else:
-                    print("Waiting for {}".format(i.name))
+                    gl("Waiting for {}".format(i.name))
                     if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
@@ -167,17 +168,17 @@ class Farm:
         try:
             return from_hex(json.loads(requests.get(q.format(self.KEY)).content)['result'])
         except:
-            print("Something failed, while getting the latest block:")
+            gl("Something failed, while getting the latest block:")
             q = q.format(self.KEY)
             if "Bad Gateway" in str(q):
-                print("Bad Gateway - latest Block")
+                gl("Bad Gateway - latest Block")
                 time.sleep(10)
                 return self.latestBlock
-            print(q)
+            gl(q)
             try:
                 q = q.content
                 q = requests.get(q)
-                print(q)                
+                gl(q)                
                 q = json.loads(q)['result']
                 lB = from_hex(q)
             except:
@@ -206,7 +207,7 @@ class Farm:
         string = ""
         for s in self.contracts:
             string += s.__repr__() + "\n"
-        print("Farm instance initiated with the following contracts\n\n{}".format(string))
+        gl("Farm instance initiated with the following contracts\n\n{}".format(string))
         time.sleep(1)
         return self
     
@@ -214,7 +215,7 @@ class Farm:
     def log_header(self):
         header = ("Timestamp", "Contract", "Current Chunk", "Chunk Timestamp", "Events", "Chsz", "Fc")
         log = "\033[4m{:^23}-{:^18}|{:^21}| {:^20}|{:^6}|{:^6}|{:^6}\033[0m".format(*header)
-        print(log)
+        gl(log)
     
     # Check end.txt file if the program should stop
     def safe_end(self):
