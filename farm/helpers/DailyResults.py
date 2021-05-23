@@ -6,13 +6,12 @@ import os
 import csv
 import boto3
 from google.cloud import bigquery
+from farm.helpers.Logger import globalLogger as gl
 
 # AWS Stuff
 s3_res = boto3.resource('s3')
 s3 = boto3.client('s3')
 # END AWS Stuff
-
-
 
 class DailyResults():
     def __init__(self, name, init):
@@ -33,7 +32,7 @@ class DailyResults():
         # This helps for entering recursive mode
         # When the dataFrame is split, it can happen that nothing remains but the empty dataFrame
         if results.empty == True:
-            print("Empty Dataframe...")
+            gl("Empty Dataframe...")
             return False
         
         # Get day of month (ex. 04) for the first entry in the results
@@ -98,7 +97,7 @@ class DailyResults():
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=approval_schema)
             else:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
-            print(" -- BigQuery Sync successfull --")
+            gl(" -- BigQuery Sync successfull --")
         
         res=s3.put_object(Body = csv_buf.getvalue(), 
                       Bucket = aws_bucket, 
@@ -112,7 +111,7 @@ class DailyResults():
                                                                       contract.method.canonicalExpression.split("(")[0].lower(),
                                                                       filename))
         assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
-        # print("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
+        # gl("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
                                                                         # contract.method.canonicalExpression.split("(")[0].lower(),
                                                                       #  filename))
                 
@@ -122,6 +121,6 @@ class DailyResults():
                                                          contract.method.canonicalExpression.split("(")[0].lower())
         res = s3.put_object(Body=str(chunk.iloc[-1]['blocknumber']),Bucket=aws_bucket,Key=fK)
         assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
-        print(" -- AWS Sync successfull --")
+        gl(" -- AWS Sync successfull --")
         return True
 

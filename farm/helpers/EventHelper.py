@@ -1,5 +1,6 @@
 import json, requests, time
 from json.decoder import JSONDecodeError
+from farm.helpers.Logger import globalLogger as gl 
 
 def from_hex(string):
     if str(string) == '0x':
@@ -157,8 +158,8 @@ def prepare_event(e, methodId, KEY):
                 _res = json.loads(requests.get(_queryString).content) 
             except JSONDecodeError:
                 _res=None
-                print(requests.get(_queryString).content)
-                print("Some strange JSONDecodeError")
+                gl(requests.get(_queryString).content)
+                gl("Some strange JSONDecodeError")
                 time.sleep(1)
         
         _res = _res['result']
@@ -190,8 +191,8 @@ def prepare_event(e, methodId, KEY):
                 _res = json.loads(requests.get(_queryString).content) 
             except JSONDecodeError:
                 _res=None
-                print(requests.get(_queryString).content)
-                print("Some strange JSONDecodeError")
+                gl(requests.get(_queryString).content)
+                gl("Some strange JSONDecodeError")
                 time.sleep(1)
         
         _res = _res['result']

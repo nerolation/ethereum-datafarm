@@ -7,7 +7,7 @@ import time
 import json
 import csv
 from json.decoder import JSONDecodeError
-
+from farm.helpers.Logger import globalLogger as gl 
 from farm.helpers.EventHelper import from_hex, prepare_event, get_header_columns
 from farm.helpers.DailyResults import DailyResults
 from farm.helpers.Method import Method
@@ -57,7 +57,7 @@ class Contract:
     # Increase Chunksize
     def increase_chunksize(self):
         self.chunksize = round(self.chunksize*2) if self.chunksize < 10000 else self.chunksize
-        #print('... increasing chunksize for {} to {}'.format(self.name,self.chunksize))
+        #gl('... increasing chunksize for {} to {}'.format(self.name,self.chunksize))
         return
     
     # Prepare raw request data to be safed as csv
@@ -84,11 +84,11 @@ class Contract:
         try:
             res = json.loads(requests.get(queryString).content) 
         except JSONDecodeError:
-            print(requests.get(queryString).content)
-            print("Some strange JSONDecodeError")
+            gl(requests.get(queryString).content)
+            gl("Some strange JSONDecodeError")
             return None
         except:
-            print("Some other strange error")
+            gl("Some other strange error")
             return None
         
         # Catch fails
@@ -100,7 +100,7 @@ class Contract:
         
         # If API endpoint blocks request, then wait and try again next iteration (within contract array in farm)
         if (res['status'] == '0' or not res):
-            print('... request failed for {}'.format(self.addr))
+            gl('... request failed for {}'.format(self.addr))
             time.sleep(10)
             return
         
@@ -108,7 +108,7 @@ class Contract:
         # If so, enter recursive mode with a smaller chunksize - try again
         if (len(res['result']) >= 1000): #Request to large
             self.chunksize -= round(self.chunksize / 3)
-            #print('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
+            #gl('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
             return self.query_API(KEY) # Recursive bby
         
         # Add len of result to chunksizeAdjuster list and remove first element
