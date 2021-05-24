@@ -152,8 +152,8 @@ def prepare_event(e, methodId, KEY):
         gu = from_hex(e['gasUsed'])
         li = from_hex(e['logIndex'])
         re = '0x' + e['topics'][1][-40:]
-        pt = e['data'][:66]
-        to = e['data'][-60:]
+        pt = from_hex(e['data'][:66])
+        to = from_hex("0x"+e['data'][-60:])
         return [ts,bn,th,ti,li,re,pt,to,gp,gu]
     
     elif methodId in ["0xa945e51eec50ab98c161376f0db4cf2aeba3ec92755fe2fcd388bdbbb80ff196"]: # DepositEvent TORN ETH
