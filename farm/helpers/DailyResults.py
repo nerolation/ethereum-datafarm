@@ -96,7 +96,6 @@ class DailyResults():
                                   ]
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=approval_schema)
             if contract.method.simpleExp.lower() == "swap":
-                print(chunk)
                 swap_schema = [{'name': 'timestamp', 'type': 'INTEGER'},
                                {'name': 'blocknumber', 'type': 'INTEGER'},
                                {'name': 'txhash', 'type': 'STRING'},
