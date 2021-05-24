@@ -95,6 +95,22 @@ class DailyResults():
                                    {'name': 'gas_used', 'type': 'INTEGER'}
                                   ]
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=approval_schema)
+            if contract.method.simpleExp.lower() == "swap":
+                print(chunk)
+                swap_schema = [{'name': 'timestamp', 'type': 'INTEGER'},
+                               {'name': 'blocknumber', 'type': 'INTEGER'},
+                               {'name': 'txhash', 'type': 'STRING'},
+                               {'name': 'txindex', 'type': 'INTEGER'},
+                               {'name': 'logindex', 'type': 'INTEGER'},
+                               {'name': 'recipient', 'type': 'STRING'},
+                               {'name': 'ptorn', 'type': 'INTEGER'},
+                               {'name': 'torn', 'type': 'BIGNUMERIC'},
+                               {'name': 'gas_price', 'type': 'INTEGER'},
+                               {'name': 'gas_used', 'type': 'INTEGER'}
+                              ]
+                
+                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=swap_schema)
+
             else:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
             gl(" -- BigQuery Sync successfull --")
