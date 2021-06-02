@@ -24,7 +24,11 @@ Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai 
 ## Example dashboard
 [Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
 
+[Tornado Cash Dasboard](https://toniwahrstaetter.com/tornadocash.html) (mobile only)
+
 [ERC-20s Dasboard](https://toniwahrstaetter.com/token-transfers.html) (mobile only)
+
+
 
 ## Usage
 
@@ -166,6 +170,7 @@ Comparison of the number of Transfers of the largest Ethereum-based Stablecoins
 
 ## Next Steps
 * Safely terminated execution with KeyboardInterrupt commands
+* Fix table-schema-bug that occurs for certain contracts
 
 <br />
 
