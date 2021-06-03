@@ -82,34 +82,9 @@ class DailyResults():
                 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
-            if contract.method.simpleExp.lower() == "approval":
-                approval_schema = [{'name': 'timestamp', 'type': 'INTEGER'},
-                                   {'name': 'blocknumber', 'type': 'INTEGER'},
-                                   {'name': 'txhash', 'type': 'STRING'},
-                                   {'name': 'txindex', 'type': 'INTEGER'},
-                                   {'name': 'logindex', 'type': 'INTEGER'},
-                                   {'name': 'txfrom', 'type': 'STRING'},
-                                   {'name': 'txto', 'type': 'STRING'},
-                                   {'name': 'txvalue', 'type': 'STRING'},
-                                   {'name': 'gas_price', 'type': 'INTEGER'},
-                                   {'name': 'gas_used', 'type': 'INTEGER'}
-                                  ]
-                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=approval_schema)
-            if contract.method.simpleExp.lower() == "swap":
-                swap_schema = [{'name': 'timestamp', 'type': 'INTEGER'},
-                               {'name': 'blocknumber', 'type': 'INTEGER'},
-                               {'name': 'txhash', 'type': 'STRING'},
-                               {'name': 'txindex', 'type': 'INTEGER'},
-                               {'name': 'logindex', 'type': 'INTEGER'},
-                               {'name': 'recipient', 'type': 'STRING'},
-                               {'name': 'ptorn', 'type': 'INTEGER'},
-                               {'name': 'torn', 'type': 'BIGNUMERIC'},
-                               {'name': 'gas_price', 'type': 'INTEGER'},
-                               {'name': 'gas_used', 'type': 'INTEGER'}
-                              ]
-                
-                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=swap_schema)
-
+            ts = self.get_table_schema(contract)
+            if ts:
+                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
             else:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
             gl(" -- BigQuery Sync successfull --")
@@ -138,4 +113,50 @@ class DailyResults():
         assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
         gl(" -- AWS Sync successfull --")
         return True
+    
+    # This can be used to provide a fixed table schema for specific contracts or methods
+    def get_table_schema(self, contract, schema=None):
+        if contract.method.simpleExp.lower() == "approval":
+            schema = [  {'name': 'timestamp', 'type': 'INTEGER'},
+                        {'name': 'blocknumber', 'type': 'INTEGER'},
+                        {'name': 'txhash', 'type': 'STRING'},
+                        {'name': 'txindex', 'type': 'INTEGER'},
+                        {'name': 'logindex', 'type': 'INTEGER'},
+                        {'name': 'txfrom', 'type': 'STRING'},
+                        {'name': 'txto', 'type': 'STRING'},
+                        {'name': 'txvalue', 'type': 'STRING'},
+                        {'name': 'gas_price', 'type': 'INTEGER'},
+                        {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
+
+        if contract.method.simpleExp.lower() == "transfer" and contract.name == "bnb:
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'txfrom', 'type': 'STRING'},
+                       {'name': 'txto', 'type': 'STRING'},
+                       {'name': 'txvalue', 'type': 'STRING'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
+
+        if contract.method.simpleExp.lower() == "swap":
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'recipient', 'type': 'STRING'},
+                       {'name': 'ptorn', 'type': 'INTEGER'},
+                       {'name': 'torn', 'type': 'BIGNUMERIC'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
+            
+    return schema
+                
+
+
 
