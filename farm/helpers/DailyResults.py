@@ -129,7 +129,7 @@ class DailyResults():
                         {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
 
-        if contract.method.simpleExp.lower() == "transfer" and contract.name == "bnb:
+        if contract.method.simpleExp.lower() == "transfer" and contract.name == "bnb":
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
                        {'name': 'txhash', 'type': 'STRING'},
