@@ -154,7 +154,6 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
-            
         return schema
                 
 
