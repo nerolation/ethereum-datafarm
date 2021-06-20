@@ -102,8 +102,8 @@ class Farm:
                     if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
-                        gl("Switch activated: {}".format((str(self.canSwitch))
-                        gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor, self.contract_length))
+                        gl("Switch activated: {}".format((str(self.canSwitch))))
+                        gl("Monitor Count: {}\nContracts:{}".format(self.waitingMonitor,self.contract_length))
                     self.wait(i)
                       
     def get_future_startTime(self):
