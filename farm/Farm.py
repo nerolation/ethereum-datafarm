@@ -53,9 +53,7 @@ class Farm:
             
             if self.canSwitch:
                 print("START SWITCH")
-                gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,
-                                                            self.contract_length 
-                                                           ))
+                gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,self.contract_length))
                 gl("Switch contract.csv config file", animated=True)
                 self.currentContractPath = self.get_next_file()
                 self.contracts=[]
