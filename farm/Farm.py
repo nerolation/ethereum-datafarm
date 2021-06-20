@@ -105,9 +105,7 @@ class Farm:
                         i.shouldWait = True
                         self.waitingMonitor += 1
                         gl("Switch activated: {}".format((str(self.canSwitch))
-                        gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,
-                                                                        self.contract_length 
-                                                                       ))
+                        gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor, self.contract_length))
                     self.wait(i)
                       
     def get_future_startTime(self):
