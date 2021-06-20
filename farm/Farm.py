@@ -52,6 +52,10 @@ class Farm:
             self.latestBlock = self.get_latest_block()
             
             if self.canSwitch:
+                print("START SWITCH")
+                gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,
+                                                            self.contract_length 
+                                                           ))
                 gl("Switch contract.csv config file", animated=True)
                 self.currentContractPath = self.get_next_file()
                 self.contracts=[]
@@ -100,6 +104,10 @@ class Farm:
                     if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
+                        gl("Switch activated: {}".format((str(self.canSwitch))
+                        gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,
+                                                                        self.contract_length 
+                                                                       ))
                     self.wait(i)
                       
     def get_future_startTime(self):
@@ -107,7 +115,7 @@ class Farm:
         
                       
     
-    # Wait some time if every contract reached the latest block
+    # Wait some time if every contract reached the latest block or try to switch file
     def adjust_speed(self):
         if self.contract_length == self.waitingMonitor and self.waitingMonitor != 0:
             self.try_activate_contract_change()
@@ -221,6 +229,9 @@ class Farm:
     def safe_end(self):
         try:
             with open("config/end.txt") as endfile:
-                return False if endfile.read().strip() == "True" else True
+                run = False if endfile.read().strip() == "True" else True
+                if not run:
+                    gl("Termination initiated through `config/end.txt` file")
+                return run
         except:
             return True
