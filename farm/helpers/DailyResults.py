@@ -141,6 +141,19 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
+            
+        if contract.method.simpleExp.lower() == "transfer" and contract.name == "dai":
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'txfrom', 'type': 'STRING'},
+                       {'name': 'txto', 'type': 'STRING'},
+                       {'name': 'txvalue', 'type': 'BIGNUMERIC'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
 
         if contract.method.simpleExp.lower() == "swap":
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
@@ -154,8 +167,7 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
-            
-    return schema
+        return schema
                 
 
 
