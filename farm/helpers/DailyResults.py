@@ -64,14 +64,12 @@ class DailyResults():
             
     def save_results(self, chunk, contract, aws_bucket, useBigQuery):
         del chunk['day']
-        filename = datetime.utcfromtimestamp(chunk.iloc[0][0]).strftime("%d_%m_%Y")
+        filename = datetime.utcfromtimestamp(chunk.iloc[0][0]).strftime("%Y_%m_%d")
         
         chunk.columns = contract.headerColumn
         
         csv_buf = io.StringIO()
-        pickle_buf = io.BytesIO()
         chunk.to_csv(csv_buf, index = False)
-        chunk.to_pickle(pickle_buf)
         
         # BigQuery Upload
         if useBigQuery:
@@ -79,7 +77,7 @@ class DailyResults():
                 client
             except:
                 # Google Stuff
-                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'ethereum-datahub.json'
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'tokendata.json'
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             ts = self.get_table_schema(contract)
@@ -94,17 +92,7 @@ class DailyResults():
                       Key = 'contracts/{}_{}/csv/{}.csv'.format(contract.name, 
                                                                 contract.method.canonicalExpression.split("(")[0].lower(),
                                                                 filename))
-        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
-        res=s3.put_object(Body = pickle_buf.getvalue(), 
-                      Bucket = aws_bucket, 
-                      Key = 'contracts/{}_{}/pickle/{}.pickle'.format(contract.name, 
-                                                                      contract.method.canonicalExpression.split("(")[0].lower(),
-                                                                      filename))
-        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)
-        # gl("Saved Chunk to AWS S3 as `{}_{}/{}.(csv|pickle)`".format(contract.name, 
-                                                                        # contract.method.canonicalExpression.split("(")[0].lower(),
-                                                                      #  filename))
-                
+        assert(res["ResponseMetadata"]["HTTPStatusCode"]==200)                
                 
         fK = 'config/{}/lastSafedBlock/{}_{}.txt'.format("contracts",
                                                          contract.name,

@@ -24,10 +24,10 @@ class Logger:
         return self
 
 
-    def logprint(self, content, animated=False):
-        if animated:
+    def logprint(self, content, animated=False, clog=True):
+        if animated & clog:
             self.animation(content)
-        else:
+        elif clog:
             print(content)
         if self.activatedLogger:
             logging.info(content)

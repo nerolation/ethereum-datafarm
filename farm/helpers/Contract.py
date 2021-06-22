@@ -80,6 +80,7 @@ class Contract:
                                        KEY)
         
         
+        gl(queryString,False,False)
         # Submit Request
         try:
             res = json.loads(requests.get(queryString).content) 
@@ -101,12 +102,12 @@ class Contract:
         # If API endpoint blocks request, then wait and try again next iteration (within contract array in farm)
         if (res['status'] == '0' or not res):
             gl('... request failed for {}'.format(self.addr))
-            time.sleep(10)
+            time.sleep(5)
             return
         
         # Check if len of returned results is the maximum of 1000
         # If so, enter recursive mode with a smaller chunksize - try again
-        if (len(res['result']) >= 1000): #Request to large
+        if (len(res['result']) >= 1000): # Request to large
             self.chunksize -= round(self.chunksize / 3)
             #gl('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
             return self.query_API(KEY) # Recursive bby
