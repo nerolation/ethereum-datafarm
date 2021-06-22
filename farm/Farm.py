@@ -99,10 +99,10 @@ class Farm:
                         # Try to safe results
                         i.DailyResults.try_to_save_day(result, i,self.aws_bucket,self.useBigQuery)
                     else:
-                        gl("{} - No records for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
+                        gl(" {} - No records for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
                         
                 else:
-                    gl("{} - Waiting for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
+                    gl(" {} - Waiting for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
                     if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
