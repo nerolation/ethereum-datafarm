@@ -14,6 +14,7 @@ The ethereum-datafarm aims to provide researches quick access to Ethereum blockc
 * Low CPU, RAM and SSD requirements (AWS S3 is used)
 * .Csv, .pickle and SQL (GBQ) support
 * Throttles down the number of requests to the API when the latest block is reached
+* Logging (optional)
 <br />
 
 ## Example data output
@@ -158,6 +159,11 @@ $ Chsz -            Current Chunksize
 $ Fc -              Filecounter - Files safed since initialization
 ```
 <br />
+
+## Logging
+Make usage of logging by creating a directory named "logs" (see above @ local file structure)
+This will automatically enable the logging module.
+
 
 ## Examples
 
