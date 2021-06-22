@@ -3,7 +3,7 @@ import time
 import json
 import glob
 import re
-from farm.helpers.Contract import Contract
+from farm.helpers.Contract import Contract, from_unix
 from farm.helpers.ContractLoader import load_contracts
 from farm.helpers.EventHelper import from_hex
 from farm.helpers.DailyResults import s3_res, datetime, timedelta
@@ -58,8 +58,12 @@ class Farm:
                 self.currentContractPath = self.get_next_file()
                 self.contracts=[]
                 gl("File switched", animated=True)
-                gl("Waiting until {} to proceed".format(self.get_future_startTime()), animated=True)
-                time.sleep(86400/2)
+                gl("Waiting until {} - Crtl C to proceed".format(self.get_future_startTime()), animated=True)
+                try:
+                    time.sleep(86400/2)
+                except KeyboardInterrupt:
+                    gl("Continuing...", animated=True)
+                          
                 start=True
                 self.secureSwitch=False
                 self.waitingMonitor=0 # Reset
@@ -93,22 +97,21 @@ class Farm:
                         result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
                         
                         # Try to safe results
-                        i.DailyResults.try_to_save_day(result, i, self.aws_bucket, self.useBigQuery)
+                        i.DailyResults.try_to_save_day(result, i,self.aws_bucket,self.useBigQuery)
                     else:
-                        gl("No records for {} with method {}".format(i.name, i.method.simpleExp))
+                        gl("{} - No records for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
                         
                 else:
-                    gl("Waiting for {} with method {}".format(i.name, i.method.simpleExp))
+                    gl("{} - Waiting for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
                     if i.shouldWait == False:
                         i.shouldWait = True
                         self.waitingMonitor += 1
-                        gl("Switch activated: {}".format((str(self.canSwitch))))
+                        gl("Switch activated: {}".format(str(self.canSwitch)))
                         gl("Monitor Count: {}\nContracts:{}".format(self.waitingMonitor,self.contract_length))
                     self.wait(i)
                       
     def get_future_startTime(self):
         return datetime.strftime(datetime.now()+timedelta(hours=12), "%H:%M:%S")
-        
                       
     
     # Wait some time if every contract reached the latest block or try to switch file
