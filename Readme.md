@@ -140,6 +140,12 @@ The *end.txt* file is used to securely terminate the programme at a known positi
 False means "no end", True equals "end, stop the programme"
 <br />
 
+
+## Logging
+Make usage of logging by creating a directory named "logs" (see above @ local file structure)
+This will automatically enable the logging module.
+<br />
+
 ## Demo
 
 Initialize farm and starts scraping data:
@@ -159,11 +165,6 @@ $ Chsz -            Current Chunksize
 $ Fc -              Filecounter - Files safed since initialization
 ```
 <br />
-
-## Logging
-Make usage of logging by creating a directory named "logs" (see above @ local file structure)
-This will automatically enable the logging module.
-
 
 ## Examples
 
