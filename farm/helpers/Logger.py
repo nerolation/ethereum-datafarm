@@ -37,4 +37,5 @@ try:
     globalLogger=Logger().activateLogger().logprint
 except FileNotFoundError:
     print("No `logs` folder found. No logs will be stored...")
+    time.sleep(3)
     globalLogger=Logger().logprint       
