@@ -20,7 +20,6 @@ class Farm:
                  logging=True,
                  aws_bucket=None, 
                  useBigQuery=False, 
-                 canSwitch=False,
                  secureSwitch=True
                 ):
         self.contracts = contracts                 # Contracts objs.
@@ -33,83 +32,97 @@ class Farm:
        
         self.lag = 4000                            # Block delay to not risk invalid blocks
         self.useBigQuery = useBigQuery             # BigQuery Upload
-        self.canSwitch = canSwitch                 # Specify if the contracts.csv file can be switched
+        self.canSwitch = False                     # Specify if the contracts.csv file can be switched
         self.secureSwitch = secureSwitch           # no confirmation needed after config-file switch
         self.currentContractPath = self.contracts[0].path
+        self.justSwitched = False                 # Binary variable to alter contracts' chunksize after config switch
         gl("\nInitiating Farm Instance with {} Contracts/Methods".format(len(contracts)), animated=True)
                 
     
     # Main function
     def start_farming(self):
-        # Endless == True if end.txt == False => allows to safely end the program at the beginning of an iteration
-        endless = True
-        self.log_header()
-        while(endless):
-            endless = self.safe_end()
-            # Slow down program if the latest block is reached for every token
-            self.adjust_speed()
-            # Update latestBlock
-            self.latestBlock = self.get_latest_block()
-            
-            if self.canSwitch:
-                print("START SWITCH")
-                gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,self.contract_length))
-                gl("Switch contract.csv config file", animated=True)
-                self.currentContractPath = self.get_next_file()
-                self.contracts=[]
-                gl("File switched", animated=True)
-                gl("Waiting until {} - Crtl C to proceed".format(self.get_future_startTime()), animated=True)
-                try:
-                    time.sleep(86400/2)
-                except KeyboardInterrupt:
-                    gl("Continuing...", animated=True)
-                          
-                start=True
-                self.secureSwitch=False
-                self.waitingMonitor=0 # Reset
-                self.canSwitch=False  # Reset
-            else:
-                self.currentContractPath = self.contracts[0].path
-                start=False
-            # Load or remove new contracts
-            self.contracts = load_contracts(
-                                            self.contracts, 
-                                            start, 
-                                            config_location=self.currentContractPath, 
-                                            aws_bucket=self.aws_bucket,
-                                            secureStart=self.secureSwitch
-                                           )
-            if start:
-                self.contract_length=len(self.contracts)
-            # Loop over the list of contracts
-            for i in self.contracts: 
-                # If latestBlock is reached => wait
-                if self.not_wait(i):
-                    # API request
-                    query = i.query_API(self.KEY)
-                    # Try to increase the chunksize
-                    if i.chunksize_could_be_larger() and i.chunksizeLock == False:
-                        i.increase_chunksize()
-                    if query:
-                        # Prepare raw request for further processing
-                        chunk = i.mine(query, i.method.id, self.KEY)
-                        gl(i.log_to_console(chunk))
-                        result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
-                        
-                        # Try to safe results
-                        i.DailyResults.try_to_save_day(result, i,self.aws_bucket,self.useBigQuery)
-                    else:
-                        gl(" {} - No records for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
-                        
+        try:
+            # Endless == True if end.txt == False => allows to safely end the program at the beginning of an iteration
+            endless = True
+            self.log_header()
+            while(endless):
+                endless = self.safe_end()
+                # Slow down program if the latest block is reached for every token
+                self.adjust_speed()
+                # Update latestBlock
+                self.latestBlock = self.get_latest_block()
+
+                if self.canSwitch:
+                    print("START SWITCH")
+                    gl("Monitor Count: {}\nContracts: {}".format(self.waitingMonitor,self.contract_length))
+                    gl("Switch contract.csv config file", animated=True)
+                    self.currentContractPath = self.get_next_file()
+                    self.contracts=[]
+                    gl("File switched", animated=True)
+                    gl("Waiting until {} - Crtl C to proceed".format(self.get_future_startTime()), animated=True)
+                    try:
+                        time.sleep(86400/2)
+                    except KeyboardInterrupt:
+                        gl("Continuing", animated=True)
+
+                    start=True
+                    self.justSwitched = True
+                    self.secureSwitch=False
+                    self.waitingMonitor=0 # Reset
+                    self.canSwitch=False  # Reset
                 else:
-                    gl(" {} - Waiting for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
-                    if i.shouldWait == False:
-                        i.shouldWait = True
-                        self.waitingMonitor += 1
-                        gl("Switch activated: {}".format(str(self.canSwitch)))
-                        gl("Monitor Count: {}\nContracts:{}".format(self.waitingMonitor,self.contract_length))
-                    self.wait(i)
-                      
+                    self.currentContractPath = self.contracts[0].path
+                    start=False
+                # Load or remove new contracts
+                self.contracts = load_contracts(
+                                                self.contracts, 
+                                                start, 
+                                                config_location=self.currentContractPath, 
+                                                aws_bucket=self.aws_bucket,
+                                                secureStart=self.secureSwitch
+                                               )
+                if start and self.justSwitched:
+                    self.justSwitched = False
+                    gl("Contracts' chunksize set to 100")
+                    for contract in self.contracts:
+                        contract.chunksize = 100
+                        
+                elif start:
+                    self.contract_length=len(self.contracts)
+                
+                
+                # Loop over the list of contracts
+                for i in self.contracts: 
+                    # If latestBlock is reached => wait
+                    if self.not_wait(i):
+                        # API request
+                        query = i.query_API(self.KEY)
+                        # Try to increase the chunksize
+                        if i.chunksize_could_be_larger() and i.chunksizeLock == False:
+                            i.increase_chunksize()
+                        if query:
+                            # Prepare raw request for further processing
+                            chunk = i.mine(query, i.method.id, self.KEY)
+                            gl(i.log_to_console(chunk))
+                            result = i.DailyResults.enrich_daily_results_with_day_of_month(chunk)
+
+                            # Try to safe results
+                            i.DailyResults.try_to_save_day(result, i,self.aws_bucket,self.useBigQuery)
+                        else:
+                            gl(" {} - No records for {} with method {} and chunk {:,}-{:,}".format(from_unix(datetime.now()),i.name,i.method.simpleExp, i.fromBlock-i.chunksize,i.fromBlock))                        
+
+                    else:
+                        gl(" {} - Waiting for {} with method {}".format(from_unix(datetime.now()),i.name,i.method.simpleExp))
+                        if i.shouldWait == False:
+                            i.shouldWait = True
+                            self.waitingMonitor += 1
+                            gl("Switch activated: {}".format(str(self.canSwitch)))
+                            gl("Monitor Count: {}\nContracts:{}".format(self.waitingMonitor,self.contract_length))
+                        self.wait(i)
+        except KeyboardInterrupt:
+            gl("Application stops", animated=True)
+            exit(1)
+            
     def get_future_startTime(self):
         return datetime.strftime(datetime.now()+timedelta(hours=12), "%H:%M:%S")
                       
