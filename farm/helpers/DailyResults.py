@@ -71,7 +71,7 @@ class DailyResults():
             rest = results[results['day'] != firstEntry]
             return self.try_to_save_day(rest, contract, aws_bucket, useBigQuery)
             
-    def save_results(self, chunk, contract, aws_bucket, useBigQuery):
+    def save_results(self, chunk, contract, aws_bucket, useBigQuery, sync=False):
         del chunk['day']
         filename = datetime.utcfromtimestamp(chunk.iloc[0][0]).strftime("%Y_%m_%d")
         
@@ -92,13 +92,16 @@ class DailyResults():
             ts = self.get_table_schema(contract)
             if ts:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
+                sync=True
             else:
                 try:
                     chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+                    sync=True
                 except InvalidSchema:
                     ts = self.get_table_schema(contract, None, True)
                     chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
-                    
+                    sync=True
+            assert(sync == True)
             gl(" -- BigQuery Sync successfull --")
         
         res=s3.put_object(Body = csv_buf.getvalue(), 
