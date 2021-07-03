@@ -6,6 +6,7 @@ import os
 import csv
 import boto3
 from google.cloud import bigquery
+from pandas_gbq.gbq import InvalidSchema
 from farm.helpers.Logger import globalLogger as gl
 
 # AWS Stuff
@@ -31,7 +32,7 @@ class DailyResults():
     def try_to_save_day(self, results, contract, aws_bucket, useBigQuery):
         # This helps for entering recursive mode
         # When the dataFrame is split, it can happen that nothing remains but the empty dataFrame
-        if results.empty == True:
+        if results.empty == True and contract.endAtBlock == None:
             gl("Empty Dataframe...")
             return False
         
@@ -44,8 +45,16 @@ class DailyResults():
         # Get day of month (ex. 04) for the last entry in the results
         lastEntry = results.iloc[-1]["day"]
         
-        # No save cause day isn't over...probably
+        # No save cause day isn't over...except endAtBlock is set
         if firstEntry == lastEntry:
+            if contract.endAtBlock != None:
+                if contract.fromBlock >= contract.endAtBlock:
+                    print("\n\n\n --------2222222222--------- \n\n\n")
+                    self.results = self.results.append(results)
+                    self.save_results(self.results, contract, aws_bucket, useBigQuery)
+                    contract.fileCounter += 1
+                    self.results = pd.DataFrame()
+                    return True
             self.results = self.results.append(results)
             return True
         
@@ -84,7 +93,12 @@ class DailyResults():
             if ts:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
             else:
-                chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+                try:
+                    chunk.to_gbq(table_id, if_exists="append", chunksize=10000000)
+                except InvalidSchema:
+                    ts = self.get_table_schema(contract, None, True)
+                    chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
+                    
             gl(" -- BigQuery Sync successfull --")
         
         res=s3.put_object(Body = csv_buf.getvalue(), 
@@ -103,7 +117,7 @@ class DailyResults():
         return True
     
     # This can be used to provide a fixed table schema for specific contracts or methods
-    def get_table_schema(self, contract, schema=None):
+    def get_table_schema(self, contract, schema=None, basicSchema=None):
         if contract.method.simpleExp.lower() == "approval":
             schema = [  {'name': 'timestamp', 'type': 'INTEGER'},
                         {'name': 'blocknumber', 'type': 'INTEGER'},
@@ -152,6 +166,18 @@ class DailyResults():
                        {'name': 'recipient', 'type': 'STRING'},
                        {'name': 'ptorn', 'type': 'INTEGER'},
                        {'name': 'torn', 'type': 'BIGNUMERIC'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
+        if basicSchema != None:
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'txfrom', 'type': 'STRING'},
+                       {'name': 'txto', 'type': 'STRING'},
+                       {'name': 'txvalue', 'type': 'STRING'},
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]

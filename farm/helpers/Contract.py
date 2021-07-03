@@ -31,7 +31,7 @@ def from_unix(time):
 #   to differentiate contracts. This opens up is the possibility to mine data from multiple
 #   events from  the same contract
 class Contract:
-    def __init__(self, addr, name, method, startblock, chunksize = 2000):
+    def __init__(self, addr, name, method, startblock, chunksize = 2000, endAtBlock = None):
         self.addr = addr # Contract address
         self.name = name.lower() # Lowercase name
         self.method = Method(method) # Contract Method
@@ -45,6 +45,7 @@ class Contract:
         self.path = None # Path to the contract.csv file
         self.headerColumn = get_header_columns(self.method.id)
         self.shouldWait = False
+        self.endAtBlock = int(endAtBlock) if "None" not in str(type(endAtBlock)) else None
     
     # Check if the average number of results of the the last 10 request has to 
     # less elements and adjust the chunksize if applicable
