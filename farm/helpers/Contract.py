@@ -89,6 +89,9 @@ class Contract:
             gl(requests.get(queryString).content)
             gl("Some strange JSONDecodeError")
             return None
+        except KeyboardInterrupt:
+            gl("Application stops", animated=True)
+            exit(1) 
         except:
             gl("Some other strange error")
             return None
