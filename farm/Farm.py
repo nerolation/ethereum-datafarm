@@ -121,7 +121,7 @@ class Farm:
                         self.wait(i)
         except KeyboardInterrupt:
             gl("Application stops", animated=True)
-            exit(1)
+            endless=False
             
     def get_future_startTime(self):
         return datetime.strftime(datetime.now()+timedelta(hours=12), "%H:%M:%S")
@@ -129,7 +129,7 @@ class Farm:
     
     # Wait some time if every contract reached the latest block or try to switch file
     def adjust_speed(self):
-        if self.contract_length == self.waitingMonitor and self.waitingMonitor != 0:
+        if self.contract_length <= self.waitingMonitor and self.waitingMonitor != 0:
             self.try_activate_contract_change()
             time.sleep(10)
     
@@ -137,6 +137,7 @@ class Farm:
     def try_activate_contract_change(self):
         contractPaths = self.get_config_files()
         if len(contractPaths) > 1:
+            gl("Activating config file switch...")
             self.canSwitch = True
     
     # Get next contracts.csv configuration file
