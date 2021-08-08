@@ -87,8 +87,8 @@ class Farm:
                     for contract in self.contracts:
                         contract.chunksize = 100
                         
-                elif start:
-                    self.contract_length=len(self.contracts)
+
+                self.contract_length=len(self.contracts)
                 
                 
                 # Loop over the list of contracts
