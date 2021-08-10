@@ -199,7 +199,7 @@ class DailyResults():
                        {'name': 'amount0', 'type': 'STRING'},
                        {'name': 'amount1', 'type': 'STRING'},
                        {'name': 'sqrtPriceX96', 'type': 'STRING'},
-                       {'name': 'liquidity', 'type': 'INTEGER'},
+                       {'name': 'liquidity', 'type': 'BIGNUMERIC'},
                        {'name': 'tick', 'type': 'INTEGER'},
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
