@@ -63,6 +63,15 @@ def get_header_columns(methodId):
     elif methodId in ["0x77f92a1b6a1a11de8ca49515ad4c1fad45632dd3442167d74b90b304a3c7a758"]: # Swap pTorn/Torn
         return ['timestamp','blocknumber','txhash','txindex','logindex',
                 'recipient',"ptorn", "torn", 'gas_price', 'gas_used']
+    
+    elif methodId in ["0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67"]: # Uniswap Pool Swap
+        return ['timestamp','blocknumber','txhash','txindex','logindex',
+                'sender',"recipient", "amount0", 'amount1', 'sqrtPriceX96', 'liquidity', 'tick', 'gas_price', 'gas_used']
+    
+    elif methodId in ["0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"]: # Uniswap V2 Pool Swap
+        return ['timestamp','blocknumber','txhash','txindex','logindex',
+                'sender',"recipient", "amount0In", 'amount1In', 'amount0Out', 'amount1Out', 'gas_price', 'gas_used']
+        
 
 
 def prepare_event(e, methodId, KEY):
@@ -219,6 +228,41 @@ def prepare_event(e, methodId, KEY):
         va = from_hex(_res['value'])
         
         return [ts,bn,th,ti,li,tf,tt,va,no,gp,gu]
+    
+    elif methodId in ['0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67']: # Uniswap V3 Pool Swap
+        bn = from_hex(e['blockNumber'])
+        ts = from_hex(e['timeStamp'])
+        th = e['transactionHash']
+        ti = from_hex(e['transactionIndex'])
+        gp = from_hex(e['gasPrice'])
+        gu = from_hex(e['gasUsed'])
+        li = from_hex(e['logIndex'])
+        se = '0x' + e['topics'][1][-40:]
+        re = '0x' + e['topics'][2][-40:]
+        a0 = e['data'][2:66]
+        a1 = e['data'][66:130]
+        sP = from_hex(e['data'][130:194])
+        lq = from_hex(e['data'][194:258])
+        tk = from_hex(e['data'][258:322])
+        return [ts,bn,th,ti,li,se,re,a0,a1,sP,lq,tk,gp,gu]
+        
+        
+    elif methodId in ["0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"]: # Uniswap V2 Pool Swap
+        bn = from_hex(e['blockNumber'])
+        ts = from_hex(e['timeStamp'])
+        th = e['transactionHash']
+        ti = from_hex(e['transactionIndex'])
+        gp = from_hex(e['gasPrice'])
+        gu = from_hex(e['gasUsed'])
+        li = from_hex(e['logIndex'])
+        se = '0x' + e['topics'][1][-40:]
+        re = '0x' + e['topics'][2][-40:]
+        a0I = from_hex(e['data'][2:66])
+        a1I = from_hex(e['data'][66:130])
+        a0O = from_hex(e['data'][130:194])
+        a1O = from_hex(e['data'][194:258])   
+        return [ts,bn,th,ti,li,se,re,a0I,a1I,a0O,a1O,gp,gu]
+
     
     else:
         bn = from_hex(e['blockNumber'])
