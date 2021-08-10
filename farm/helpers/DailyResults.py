@@ -172,6 +172,22 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
+        if contract.method.simpleExp.lower() == "swap" and contract.name == "uniswappoolv2_usdc_eth":
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'sender', 'type': 'STRING'},
+                       {'name': 'recipient', 'type': 'STRING'},
+                       {'name': 'amount0In', 'type': 'BIGNUMERIC'},
+                       {'name': 'amount1In', 'type': 'BIGNUMERIC'},
+                       {'name': 'amount0Out', 'type': 'BIGNUMERIC'},
+                       {'name': 'amount1Out', 'type': 'BIGNUMERIC'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
+            
         if basicSchema != None:
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
@@ -184,6 +200,8 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
+        print("schema")
+        print(schema)
         return schema
                 
 
