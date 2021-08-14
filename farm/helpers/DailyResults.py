@@ -4,6 +4,7 @@ import pandas_gbq
 import io
 import os 
 import csv
+import re
 import boto3
 from google.cloud import bigquery
 from pandas_gbq.gbq import InvalidSchema
@@ -172,7 +173,7 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
-        if contract.method.simpleExp.lower() == "swap" and contract.name == "uniswappoolv2_usdc_eth":
+        if contract.method.simpleExp.lower() == "swap" and re.search("uniswappoolv2",contract.name):
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
                        {'name': 'txhash', 'type': 'STRING'},
@@ -188,7 +189,7 @@ class DailyResults():
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
             
-        if contract.method.simpleExp.lower() == "swap" and contract.name == "uniswappoolv3_usdc_eth":
+        if contract.method.simpleExp.lower() == "swap" and re.search("uniswappoolv3",contract.name):
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
                        {'name': 'txhash', 'type': 'STRING'},
