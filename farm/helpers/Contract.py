@@ -94,6 +94,7 @@ class Contract:
             exit(1) 
         except:
             gl("Some other strange error")
+            time.sleep(60*60)
             return None
         
         # Catch fails
