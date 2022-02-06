@@ -92,8 +92,9 @@ class Contract:
         except KeyboardInterrupt:
             gl("Application stops", animated=True)
             exit(1) 
-        except:
+        except Exception as e:
             gl("Some other strange error")
+            gl(str(e))
             time.sleep(60*60)
             return None
         
