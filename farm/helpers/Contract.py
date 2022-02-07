@@ -124,9 +124,11 @@ class Contract:
         # Check if len of returned results is the maximum of 1000
         # If so, enter recursive mode with a smaller chunksize - try again
         if (len(res['result']) >= 1000): # Request to large
-            self.chunksize -= round(self.chunksize / 3)
-            gl('... decreasing chunksize for {} to {:,.0f}'.format(self.name,self.chunksize))
-            return self.query_API(KEY) # Recursive bby
+            if self.chunksize != 1:
+                self.chunksize -= round(self.chunksize / 3)
+                gl('... decreasing chunksize for {} to {:,.0f}'.format(self.name,self.chunksize))
+                return self.query_API(KEY) # Recursive bby
+            gl("Chunksize was already at 1. Wrong block minded")
         
         # Add len of result to chunksizeAdjuster list and remove first element
         self.chunksizeAdjuster = np.append(self.chunksizeAdjuster,[len(res['result'])])[-10:]
