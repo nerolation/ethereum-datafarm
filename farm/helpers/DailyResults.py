@@ -92,9 +92,18 @@ class DailyResults():
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             ts = self.get_table_schema(contract)
             chunk['txhash'] = chunk['txhash'].astype(str)
-            chunk['txfrom'] = chunk['txfrom'].astype(str)
-            chunk['txto'] = chunk['txto'].astype(str)
-            chunk['txvalue'] = chunk['txvalue'].astype(str)
+            try:
+                chunk['txfrom'] = chunk['txfrom'].astype(str)
+            except:
+                pass
+            try:
+                chunk['txto'] = chunk['txto'].astype(str)
+            except:
+                pass
+            try:
+                chunk['txvalue'] = chunk['txvalue'].astype(str)
+            except:
+                pass
             if ts:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
                 sync=True
