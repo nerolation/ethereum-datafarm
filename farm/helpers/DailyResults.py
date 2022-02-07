@@ -50,7 +50,6 @@ class DailyResults():
         if firstEntry == lastEntry:
             if contract.endAtBlock != None:
                 if contract.fromBlock >= contract.endAtBlock:
-                    print("\n\n\n --------2222222222--------- \n\n\n")
                     self.results = self.results.append(results)
                     self.save_results(self.results, contract, aws_bucket, useBigQuery)
                     contract.fileCounter += 1
@@ -91,12 +90,10 @@ class DailyResults():
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             ts = self.get_table_schema(contract)
-            print(chunk.dtypes)
             chunk['txhash'] = chunk['txhash'].astype(str)
             for column in chunk:
                 if chunk[column].dtype == "object":
                     chunk[column] = chunk[column].astype(str)
-            print(chunk.dtypes)
             if ts:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
                 sync=True
