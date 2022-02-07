@@ -125,7 +125,7 @@ class Contract:
         # If so, enter recursive mode with a smaller chunksize - try again
         if (len(res['result']) >= 1000): # Request to large
             self.chunksize -= round(self.chunksize / 3)
-            #gl('... decreasing chunksize for {} to {}'.format(self.name,self.chunksize))
+            gl('... decreasing chunksize for {} to {:,.0f}'.format(self.name,self.chunksize))
             return self.query_API(KEY) # Recursive bby
         
         # Add len of result to chunksizeAdjuster list and remove first element
