@@ -83,8 +83,18 @@ class Contract:
         
         gl(queryString,False,False)
         # Submit Request
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
         try:
-            res = json.loads(requests.get(queryString).content) 
+            res = " "
+            while res == " ":
+                try:
+                    res = json.loads(requests.get(queryString, headers=headers).content) 
+                except KeyboardInterrupt:
+                    gl("Application stops", animated=True)
+                    exit(1)
+                except:
+                    time.sleep(60)
+                    continue
         except JSONDecodeError:
             gl(requests.get(queryString).content)
             gl("Some strange JSONDecodeError")
@@ -95,7 +105,7 @@ class Contract:
         except Exception as e:
             gl("Some other strange error")
             gl(str(e))
-            time.sleep(60*60)
+            time.sleep(60)
             return None
         
         # Catch fails
