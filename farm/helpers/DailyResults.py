@@ -91,6 +91,10 @@ class DailyResults():
                 client = bigquery.Client()
             table_id = '{}.{}'.format(contract.name, contract.method.simpleExp)
             ts = self.get_table_schema(contract)
+            chunk['txhash'] = chunk['txhash'].astype(str)
+            chunk['txfrom'] = chunk['txfrom'].astype(str)
+            chunk['txto'] = chunk['txto'].astype(str)
+            chunk['txvalue'] = chunk['txvalue'].astype(str)
             if ts:
                 chunk.to_gbq(table_id, if_exists="append", chunksize=10000000, table_schema=ts)
                 sync=True
