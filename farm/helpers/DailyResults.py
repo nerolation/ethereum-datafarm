@@ -176,6 +176,18 @@ class DailyResults():
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
                      ]
+        if contract.method.simpleExp.lower() == "deposit" and contract.name == "tornadocash10eth":
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'from', 'type': 'STRING'},
+                       {'name': 'value', 'type': 'BIGNUMERIC'},
+                       {'name': 'nonce', 'type': 'INTEGER'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]
         if contract.method.simpleExp.lower() == "swap" and re.search("uniswappoolv2",contract.name):
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
