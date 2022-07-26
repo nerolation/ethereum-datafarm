@@ -186,7 +186,18 @@ class DailyResults():
                        {'name': 'torn', 'type': 'BIGNUMERIC'},
                        {'name': 'gas_price', 'type': 'INTEGER'},
                        {'name': 'gas_used', 'type': 'INTEGER'}
-                     ]
+                     ]	
+        if contract.method.simpleExp.lower() == "supplydecreased" and contract.name == "paxos":
+            schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
+                       {'name': 'blocknumber', 'type': 'INTEGER'},
+                       {'name': 'txhash', 'type': 'STRING'},
+                       {'name': 'txindex', 'type': 'INTEGER'},
+                       {'name': 'logindex', 'type': 'INTEGER'},
+                       {'name': 'from', 'type': 'STRING'},
+                       {'name': 'value', 'type': 'STRING'},
+                       {'name': 'gas_price', 'type': 'INTEGER'},
+                       {'name': 'gas_used', 'type': 'INTEGER'}
+                     ]    
         if contract.method.simpleExp.lower() == "deposit" and contract.name == "tornadocash10eth":
             schema = [ {'name': 'timestamp', 'type': 'INTEGER'},
                        {'name': 'blocknumber', 'type': 'INTEGER'},
