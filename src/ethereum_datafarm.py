@@ -124,12 +124,12 @@ class Contract():
                     continue
                 
                 if results == "page limit reached":
-                    self.startBlock, self.startTx = check_custom_start(self.name)
+                    self.fromblock, self.startTx = check_custom_start(self.name)
                     self.CACHE = pd.DataFrame(columns=self.columns)
                     self.run = False
                     self.chunksize = int(self.chunksize/10)
                     if self.chunksize < 1: self.chunksize = 1
-                    self.avgNrOfPages.append(10)
+                    self.avgNrOfPages.append(1.5)
                     self.avgNrOfPages = self.avgNrOfPages[-10:]
                     results = [0]
                     continue
