@@ -52,9 +52,9 @@ if __name__=="__main__":
 ```bash
 $ git clone https://github.com/Nerolation/ethereum-datafarm
 $ cd ethereum-datafarm
-$ virtualenv ./venv
-$ . ./venv/bin/activate
-$ pip3 install -r requirements.txt
+$ python3 -m venv .
+$ source bin/activate
+$ pip install -r requirements.txt
 ```
 
 
