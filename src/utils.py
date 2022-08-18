@@ -56,10 +56,7 @@ def send_payload(payload):
         if "result window is too large" in res["message"].lower():
             msg = "result window is too large"
             print(WARN_MSG.format(msg))
-            print(colored("Please start over again for this contract and decrease chunk size", "red"))
-            # TODO Handle this case.. what is needed is a manual check what the last tx in the cache 
-            # is, and then the parsing must be manually set to start again at this location with a
-            # smaller chunk size
+            print(colored("Decreasing chunk size and trying again...", "red"))
             return "page limit reached"
             
         if int(res["status"]) != 1:
