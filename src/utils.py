@@ -17,7 +17,7 @@ parser.add_argument('-c', '--cores', help="cores available", default=str(cpu_cou
 _args = parser.parse_args()
 
 LOCATION = vars(_args)["location"]
-CORES = vars(_args)["cores"]
+CORES = int(vars(_args)["cores"])
 
 with open("../key/key.txt", "r") as file:
     KEY = file.read()
