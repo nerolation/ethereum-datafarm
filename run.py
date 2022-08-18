@@ -1,13 +1,12 @@
-from farm.Farm import *
+from ethereum_datafarm import *
 
-aws_bucket = "ethereum-datahub" # Your AWS bucket
-
-# Run
 if __name__=="__main__":
     
-    # Load contracts
-    contracts = load_contracts(aws_bucket=aws_bucket, config_location="contracts")
-
-    # Initialize Farm and get status
-    farm = Farm(contracts=contracts,aws_bucket=aws_bucket, useBigQuery=True).status()
-    farm.start_farming()
+    # Initialize Farm
+    farm = Farm()
+    
+    # Load Contracts
+    farm.load_contracts()
+    
+    # Start parsing
+    farm.farm()
