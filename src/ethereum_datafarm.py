@@ -6,6 +6,7 @@ from multiprocessing import Process, cpu_count, connection
 import pandas as pd
 from eth_abi import decode as abi_decode
 
+
 SLOW_DOWN = 1 # seconds to wait between api calls
 STORAGE_THRESHOLD = 1e4
 
@@ -23,7 +24,7 @@ class Farm():
         print(INFO_MSG.format("Start farming..."))
         
         try:
-            cpus = cpu_count()-1
+            cpus = CORES-1 # CORES form utils.py
             trs = int(len(self.contracts)/cpus)
             tranches={}
             for i in range(cpus):
