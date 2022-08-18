@@ -6,9 +6,9 @@ from multiprocessing import Process, cpu_count, connection
 import pandas as pd
 from eth_abi import decode as abi_decode
 
-
 SLOW_DOWN = 1 # seconds to wait between api calls
 STORAGE_THRESHOLD = 1e4
+
 
 class Farm():
     def __init__(self):
@@ -165,8 +165,7 @@ class Contract():
         for r in results:
             indexed_topics = []
             non_indexed_topics = []
-
-            
+ 
             timeStamp = from_hex(r['timeStamp'])
             blockNumber = from_hex(r['blockNumber'])
             transactionHash = r['transactionHash']
@@ -246,7 +245,7 @@ class Contract():
         
     def log_nothing_found(self):
         msg = colored("no result", "red") + " {:^20}   | ".format(colored(self.printName[:17]+"..."), "red") \
-              + "{:>10,.0f}-{:>10,.0f} | {:>9}".format(self.fromblock, self.toblock, "cs " + str(self.chunksize))
+              + "{:>10,.0f}-{:>10,.0f} | {:>9}".format(self.fromblock, self.toblock, "cs " + "{:,.0f}".format(self.chunksize))
         print(INFO_MSG.format(msg))
     
     def log_storage(self):
@@ -258,8 +257,6 @@ class Contract():
     def log_end(self):
         msg = colored(f"terminating {self.printName}", "green", attrs=["bold"])
         print(INFO_MSG.format(msg))
-            
-            
-    
+                
     def __repr__(self):
         return f"<Contract {self.name} @ {self.address}>"
