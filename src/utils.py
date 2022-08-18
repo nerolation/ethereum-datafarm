@@ -56,7 +56,6 @@ def send_payload(payload):
         if "result window is too large" in res["message"].lower():
             msg = "result window is too large"
             print(WARN_MSG.format(msg))
-            print(colored("Decreasing chunk size and trying again...", "red"))
             return "page limit reached"
             
         if int(res["status"]) != 1:
