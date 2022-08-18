@@ -164,9 +164,8 @@ def verify_abi(abi, address, name, simpleMethod):
         # success = False -- let user know but dont force interruptions
         
     if f'"name":"{simpleMethod}"'.lower() not in abi.lower():
-        print(abi.lower())
         print(f'"name":"{simpleMethod}"'.lower())
-        msg = f"contract @ {address} ({name}) does not contain method {simpleMethod}"
+        msg = f"contract @ {address} ({name}) does not contain method {simpleMethod}; maybe proxie contract?"
         print(WARN_MSG.format(msg))
         success = False
               
@@ -215,7 +214,7 @@ def get_abi(contract):
                 print(INFO_MSG.format(msg))
             return get_abi(contract)
         else:
-            msg = f"contract @ {contract.address} ({contract.name}) failed to correct retrieve abi "
+            msg = f"contract @ {contract.address} ({contract.name}) failed to retrieve right abi "
             msg2 = f"contract @ {contract.address} ({contract.name}) make sure to add abi manually to the contract's abi file"
 
             print(WARN_MSG.format(msg))
