@@ -25,11 +25,6 @@ The ethereum-datafarm aims to provide quick access to historical Ethereum event 
 Or check out [this sample output file](sample_output/csv/13_11_2019.csv) of dai transfers
 <br />
 
-## Example dashboard
-[Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
-
-[Tornado Cash Dasboard](https://toniwahrstaetter.com/tornadocash.html) (mobile only)
-
 
 ## Usage
 
@@ -82,6 +77,14 @@ Initialize farm and starts parsing data:
 * Starts farm instance
 * Loops over contracts and saves data into .csv <br /><br />
 [![asciicast](https://asciinema.org/a/gjRIuU2LmCa6VlS0reWHSKUV5.svg)](https://asciinema.org/a/gjRIuU2LmCa6VlS0reWHSKUV5)
+
+<br />
+
+
+## Example dashboard
+[Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
+
+[Tornado Cash Dasboard](https://toniwahrstaetter.com/tornadocash.html) (mobile only)
 
 <br />
 
