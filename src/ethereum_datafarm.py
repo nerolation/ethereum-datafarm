@@ -239,7 +239,7 @@ class Contract():
     
     def log_chunk_size(self, old_size, op):
         avg = sum(self.avgNrOfPages)/len(self.avgNrOfPages)
-        msg = "{} chunk size        | {}".format(op, self.printName[:17]+"...") \
+        msg = "{} chunk size        | {:<21}".format(op, self.printName[:17]+"...") \
             + " {:>5,.0f} --> {:<5,.0f} with avg. pages of {:.2f}".format(old_size, self.chunksize, avg) 
         print(INFO_MSG.format(msg))
         
