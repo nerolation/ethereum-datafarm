@@ -1,4 +1,4 @@
-# ethereum-datafarm 2.0
+# ethereum-datafarm v2.0
 
 ### Parse Smart Contract event data without requiring an archive/full node. 
 
