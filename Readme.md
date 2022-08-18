@@ -7,7 +7,7 @@ The ethereum-datafarm aims to provide quick access to historical Ethereum event 
 #### The ethereum-datafarm uses the [Etherscan.io API](https://docs.etherscan.io/), which can be used for free up to fairly generous limits.
 
 
-![](https://github.com/Nerolation/ethereum-datafarm/blob/main/pic/archive_node.gif)
+![](https://github.com/Nerolation/ethereum-datafarm/blob/main/pic/data_pic.gif)
 
 
 
