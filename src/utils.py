@@ -216,15 +216,15 @@ def get_abi(contract):
         else:
             msg = f"contract @ {contract.address} ({contract.name}) failed to retrieve right abi "
             msg2 = f"contract @ {contract.address} ({contract.name}) make sure to add abi manually to the contract's abi file"
-
+            if not os.path.isdir(f"../abis/{contract.name}.abi"):
+            with open(f"../abis/{contract.name}.abi", "w") as file:
+                file.write("")
             print(WARN_MSG.format(msg))
             print(WARN_MSG.format(msg2))
             input("press any key to continue")
             return get_abi(contract)
         
-        if not os.path.isdir(f"../abis/{contract.name}.abi"):
-            with open(f"../abis/{contract.name}.abi", "w") as file:
-                file.write("")
+        
 
     abi = eval(abi.replace("false", "False").replace("true", "True"))
     return abi
