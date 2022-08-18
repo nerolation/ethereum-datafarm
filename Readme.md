@@ -67,9 +67,10 @@ $ pip install -r requirements.txt
 
 ##### Make sure that contracts.csv has the following structure: (Contract address, custom name, canonical Event, start block, chunksize)
 ```js
-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48,usdc,Transfer(address,address,uint256),6082465,500 
-0x6B175474E89094C44Da98b954EedeAC495271d0F,dai,Transfer(address,address,uint256),8928158,500 
-0x5ef30b9986345249bc32d8928B7ee64DE9435E39,makerdao,NewCdp(address,address,uint256),8928198,5000
+0x30f938fED5dE6e06a9A7Cd2Ac3517131C317B1E7,giveth,Donate(uint64,uint64,address,uint256),5876857,50000
+0x30f938fED5dE6e06a9A7Cd2Ac3517131C317B1E7,giveth,DonateAndCreateGiver(address,uint64,address,uint256),5876857,50000
+0xDe30da39c46104798bB5aA3fe8B9e0e1F348163F,gitcoin,Transfer(address,address,uint256),12422079,50000
+0x1fd169A4f5c59ACf79d0Fd5d91D1201EF1Bce9f1,molochdao,SubmitVote(uint256,address,address,uint8),7218566,50000
 ```
 
 ## Demo
