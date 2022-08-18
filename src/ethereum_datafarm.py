@@ -122,7 +122,6 @@ class Contract():
                     self.log_nothing_found()
                     self.avgNrOfPages.append(1) 
                     self.avgNrOfPages = self.avgNrOfPages[-10:]
-                    success = False
                     results = [0]
                     continue
                 
@@ -134,6 +133,7 @@ class Contract():
                     self.run = False
                     self.chunksize = int(self.chunksize/10)
                     if self.chunksize < 1: self.chunksize = 1
+                    self.log_chunk_size(self.chunksize*10, "decreasing")
                     self.avgNrOfPages.append(1.5)
                     self.avgNrOfPages = self.avgNrOfPages[-10:]
                     results = [0]
@@ -217,29 +217,32 @@ class Contract():
                 print(INFO_MSG.format(msg))
                 self.run = True
                 self.CACHE = pd.DataFrame(columns=self.columns)
-                
-            
+                          
             
     def make_row(self, *args):
         self.CACHE.loc[len(self.CACHE)] = args[0]
         
     def try_adapting_chunksize(self):
-        if sum(self.avgNrOfPages)/len(self.avgNrOfPages) > 2:
-            cs = self.chunksize
+        op = None
+        if sum(self.avgNrOfPages)/len(self.avgNrOfPages) > 3:
+            old_cs = self.chunksize
             self.chunksize = int(self.chunksize/5)
-            self.log_chunk_size(cs, "decreasing")
+            op = "decreasing"
+            
             
         elif sum(self.avgNrOfPages)/len(self.avgNrOfPages) <= 1:
-            cs = self.chunksize
+            old_cs = self.chunksize
             if self.chunksize < 5: factor = 1.5 
             else: factor = 1.2
             self.chunksize = int(self.chunksize*factor)
-            self.log_chunk_size(cs, "increasing")
             self.avgNrOfPages.append(1.5)
             self.avgNrOfPages = self.avgNrOfPages[-10:]
+            op = "increasing"
             
         if self.chunksize <= 1:
             self.chunksize = 2  
+        if op:
+            self.log_chunk_size(old_cs, "op")
         
     def log_progress(self, len_result, page):
         msg = "parsing {:<20} | ".format(self.printName[:17]+"...") \
