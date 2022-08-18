@@ -144,7 +144,7 @@ class Contract():
                 self.avgNrOfPages.append(page - 1) 
                 self.avgNrOfPages = self.avgNrOfPages[-10:]
             else:
-                self.avgNrOfPages.append(1.5) 
+                self.avgNrOfPages.append(1) 
                 self.avgNrOfPages = self.avgNrOfPages[-10:]
             
             # Update latest block ever 600 seconds
