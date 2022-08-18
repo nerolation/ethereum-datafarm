@@ -116,14 +116,19 @@ class Contract():
                 payload = build_payload(self.fromblock, self.toblock, self.address, self.topic0, page)
                 results = send_payload(payload)
                 time.sleep(SLOW_DOWN)
+                
+                success = True
                 if results == "no records found":
                     self.log_nothing_found()
-                    results = [0]
                     self.avgNrOfPages.append(1) 
                     self.avgNrOfPages = self.avgNrOfPages[-10:]
+                    success = False
+                    results = [0]
                     continue
                 
                 if results == "page limit reached":
+                    msg = "decreasing chunk size and trying again..."
+                    print(WARN_MSG.format(msg))
                     self.fromblock, self.startTx = check_custom_start(self.name)
                     self.CACHE = pd.DataFrame(columns=self.columns)
                     self.run = False
@@ -132,6 +137,7 @@ class Contract():
                     self.avgNrOfPages.append(1.5)
                     self.avgNrOfPages = self.avgNrOfPages[-10:]
                     results = [0]
+                    success = False
                     continue
                     
                 self.parse_results(results)
@@ -139,6 +145,9 @@ class Contract():
                 self.log_progress(len(results), page)
 
                 page += 1
+            
+            if not success:
+                continue
                 
             if page - 1 >= 1:
                 self.avgNrOfPages.append(page - 1) 
@@ -149,7 +158,10 @@ class Contract():
             
             # Update latest block ever 600 seconds
             if (datetime.now()-self.timeSinceLatestBlock).total_seconds() > 6e2:
+                msg = f"updating latest block for {self.name}"
+                print(INFO_MSG.format(msg))
                 self.LATEST_BLOCK = latest_block()
+                self.timeSinceLatestBlock = datetime.now()
             
             self.fromblock =  self.toblock + 1
             
