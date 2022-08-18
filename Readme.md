@@ -91,6 +91,19 @@ Initialize farm and starts parsing data:
 
 <br />
 
+### Cite as
+
+```
+@misc{Wahrstaetter2022,
+	title = {Ethereum-datafarm},
+	url = {https://github.com/Nerolation/ethereum-datafarm},
+	urldate = {2022-08-18},
+	publisher = {Github},
+	author = {Anton Wahrstätter},
+	year = {2022},
+}
+```
+
 Visit [toniwahrstaetter.com](https://toniwahrstaetter.com/) for further details!
 <br/><br/>
 
