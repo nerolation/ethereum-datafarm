@@ -242,7 +242,7 @@ class Contract():
         if self.chunksize <= 1:
             self.chunksize = 2  
         if op:
-            self.log_chunk_size(old_cs, "op")
+            self.log_chunk_size(old_cs, op)
         
     def log_progress(self, len_result, page):
         msg = "parsing {:<20} | ".format(self.printName[:17]+"...") \
