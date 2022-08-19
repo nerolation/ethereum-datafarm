@@ -7,7 +7,7 @@ import pandas as pd
 from eth_abi import decode as abi_decode
 
 SLOW_DOWN = 1 # seconds to wait between api calls
-STORAGE_THRESHOLD = 1e4
+STORAGE_THRESHOLD = 9e3
 
 
 class Farm():
