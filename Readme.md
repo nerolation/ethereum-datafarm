@@ -80,8 +80,7 @@ Initialize farm and starts parsing data:
 * Loads contracts from contracts.csv file
 * Starts farm instance
 * Loops over contracts and saves data into .csv <br /><br />
-[![asciicast](https://asciinema.org/a/gjRIuU2LmCa6VlS0reWHSKUV5.svg)](https://asciinema.org/a/gjRIuU2LmCa6VlS0reWHSKUV5)
-
+[![asciicast](https://asciinema.org/a/b0ZTp6qsZQ7iB8OHjoppow6DH.svg)](https://asciinema.org/a/b0ZTp6qsZQ7iB8OHjoppow6DH)
 <br />
 
 
