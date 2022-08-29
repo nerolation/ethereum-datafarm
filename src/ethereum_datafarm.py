@@ -31,7 +31,7 @@ class Farm():
                 if i == cpus-1: tranches[i] = self.contracts[trs*i:]
                 else: tranches[i] = self.contracts[trs*i:trs*(i+1)]
             processes = []
-            for i in range(cpus):
+            for i in range(cpus):self.avgNrOfPages
                 processes.append(Process(target = self.split_tasks, args=tuple([tranches[i]])))
                 processes[-1].start()
             connection.wait(p.sentinel for p in processes)
@@ -228,6 +228,7 @@ class Contract():
             old_cs = self.chunksize
             self.chunksize = int(self.chunksize/5)
             op = "decreasing"
+            self.avgNrOfPages = [3]*10
             
             
         elif sum(self.avgNrOfPages)/len(self.avgNrOfPages) <= 1:
