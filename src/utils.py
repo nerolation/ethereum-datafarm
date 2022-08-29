@@ -71,7 +71,10 @@ def send_payload(payload):
         msg = "payload failed"
         print(WARN_MSG.format(msg))
         print(_res)
-        print(res) 
+        try:
+            print(res) 
+        except:
+            pass
         print(colored("Waiting for 100 seconds", "red"))
         time.sleep(100)
         return send_payload(payload)
