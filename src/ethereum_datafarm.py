@@ -31,7 +31,7 @@ class Farm():
                 if i == cpus-1: tranches[i] = self.contracts[trs*i:]
                 else: tranches[i] = self.contracts[trs*i:trs*(i+1)]
             processes = []
-            for i in range(cpus):self.avgNrOfPages
+            for i in range(cpus):
                 processes.append(Process(target = self.split_tasks, args=tuple([tranches[i]])))
                 processes[-1].start()
             connection.wait(p.sentinel for p in processes)
