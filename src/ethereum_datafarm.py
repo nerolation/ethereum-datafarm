@@ -10,15 +10,21 @@ SLOW_DOWN = 1 # seconds to wait between api calls
 STORAGE_THRESHOLD = 9e3
 
 
+
 class Farm():
     def __init__(self):
         print_start()
         log("".join(["="]*50)+ "\nStart new farm instance...")
         self.contracts = list()
+        self.processes = []
         
     def load_contracts(self):
-        for c in load_all():
-            self.contracts.append(Contract(*c))
+        try:
+            for c in load_all():
+                self.contracts.append(Contract(*c))
+        except:
+            msg = colored(f"\nLoading contracts interrupted", "red", attrs=["bold"])
+            raise ContractLoadingInterrupted(msg)          
     
     def farm(self):
         
@@ -33,29 +39,28 @@ class Farm():
             for i in range(cpus):
                 if i == cpus-1: tranches[i] = self.contracts[trs*i:]
                 else: tranches[i] = self.contracts[trs*i:trs*(i+1)]
-            processes = []
+            self.processes = []
             for i in range(cpus):
-                processes.append(Process(target = self.split_tasks, args=tuple([tranches[i]])))
-                processes[-1].start()
-            connection.wait(p.sentinel for p in processes)
+                self.processes.append(Process(target = self.split_tasks, args=tuple([tranches[i]])))
+                self.processes[-1].start()
+            connection.wait(p.sentinel for p in self.processes)
         except KeyboardInterrupt:
-            print("Safely terminating...\n")
-            if len(processes) > 0:
-                for p in processes:
+            msg = colored("Safely terminating...\n", "green", attrs=["bold"])
+            print(INFO_MSG.format(msg))
+            if len(self.processes) > 0:
+                for p in self.processes:
                     p.terminate()
                     
                 
     def split_tasks(self, c):
-        try:
+        
             for contract in c:
                 msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
                 print(INFO_MSG.format(msg))
                 log(msg)
                 contract.scrape()
                 
-        except KeyboardInterrupt:
-            msg = colored(f"Terminating farm", "green", attrs=["bold"])
-            print(INFO_MSG.format(msg))
+        
     
     
 

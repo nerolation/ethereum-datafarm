@@ -291,3 +291,6 @@ def print_start():
     print(colored("© Anton Wahrstätter 2022\n", "green", attrs=["dark","bold"]))
     print("Starting datafarm...")
     print(f"Storage location: ../{LOCATION}/<contract>")
+
+class ContractLoadingInterrupted(Exception):
+    pass
