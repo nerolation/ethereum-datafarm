@@ -46,6 +46,7 @@ if __name__=="__main__":
 
 ###### NOTE: If the event-emitting contract is a proxie contract (e.g. upgradable contracts) then the abi detection may fail. In such cases, take the right abi from Etherscan and add the .abi file manually.
 ###### NOTE: If you have too many cores, you might reach the API limit (this will be logged). In such cases, use the `-c` or `--cores` flag to set the amount of cores to be used. A value of `-c 4` is recommended.
+###### NOTE: If you want to activate logging (usefull for debugging), use the `-log` or `--log` flag. The logs are stored at "./logs.txt"
 
 <br />
 
