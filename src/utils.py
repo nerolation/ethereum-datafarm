@@ -4,6 +4,7 @@ import re
 import os
 from termcolor import colored
 from datetime import datetime
+import numpy as np
 import time
 import sha3
 import argparse
@@ -13,11 +14,14 @@ from multiprocessing import cpu_count
 parser = argparse.ArgumentParser(formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=60))
 parser.add_argument('-loc', '--location', help="output location - default: ./data", default="./data")
 parser.add_argument('-c', '--cores', help="cores available", default=str(cpu_count()))
+parser.add_argument('-log', '--log', help="activate logging", action='store_true')
+
 
 _args = parser.parse_args()
 
 LOCATION = vars(_args)["location"]
 CORES = int(vars(_args)["cores"])
+LOGGING = bool(vars(_args)["log"])
 
 with open("../key/key.txt", "r") as file:
     KEY = file.read()
@@ -88,6 +92,7 @@ def dump_cache_to_disk(df, filename, name):
     with open(f"../tmp/{name}_last_stored_tx.txt", "w") as f:
         f.write(content)
     df.to_csv(filename)
+
     
 def check_custom_start(name):
     if os.path.isfile(f"../tmp/{name}_last_stored_tx.txt"):
@@ -135,11 +140,18 @@ def latest_block():
              + f"&timestamp={round(datetime.timestamp(datetime.now()))}" \
              + "&closest=before" \
              + "&apikey={}".format(KEY)
-    
-    res = requests.get(payload)
-    time.sleep(1)
-    return int(json.loads(res.content)["result"]) - 6 # 6 blocks to make sure no re-orgs
-    
+
+    time.sleep(np.random.randint(1,3))
+    try:
+        res = requests.get(payload)
+        return int(json.loads(res.content)["result"]) - 6 # 6 blocks to make sure no re-orgs
+    except:
+        time.sleep(np.random.randint(1,10))
+        msg = "payload failed"
+        print(WARN_MSG.format(msg))
+        log(msg)
+        return latest_block()
+     
 def get_event_info(contract):
     inames=[]
     names=[]
@@ -260,6 +272,11 @@ def curtime():
         
 INFO_MSG = colored("[INFO]", "green") + " {}".format(curtime()) + " {}"
 WARN_MSG = colored("[WARN]", "red") + " {}".format(curtime()) + " {}"
+
+def log(msg):
+    if LOGGING:
+        with open("./log.txt", "a") as file:
+            file.write(msg+"\n")
 
 def print_start():
     c = """

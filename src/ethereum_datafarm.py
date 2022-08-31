@@ -13,6 +13,7 @@ STORAGE_THRESHOLD = 9e3
 class Farm():
     def __init__(self):
         print_start()
+        log("".join(["="]*50)+ "\nStart new farm instance...")
         self.contracts = list()
         
     def load_contracts(self):
@@ -22,9 +23,11 @@ class Farm():
     def farm(self):
         
         print(INFO_MSG.format("Start farming..."))
-        
         try:
-            cpus = CORES-1 # CORES form utils.py
+            if CORES > 1:
+                cpus = CORES-1 # CORES form utils.py
+            else:
+                cpus = 1
             trs = int(len(self.contracts)/cpus)
             tranches={}
             for i in range(cpus):
@@ -43,10 +46,16 @@ class Farm():
                     
                 
     def split_tasks(self, c):
-        for contract in c:
-            msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
+        try:
+            for contract in c:
+                msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
+                print(INFO_MSG.format(msg))
+                log(msg)
+                contract.scrape()
+                
+        except KeyboardInterrupt:
+            msg = colored(f"Terminating farm", "green", attrs=["bold"])
             print(INFO_MSG.format(msg))
-            contract.scrape()
     
     
 
@@ -64,7 +73,7 @@ class Contract():
             self.run = False
             msg = "{} ({}) {}".format(self.address, self.name, colored("starting at last known location", "green"))
             msg2 = "{} ({}) blockheight set to {:,.0f}".format(self.address, self.name, self.startBlock)
-            msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-40]+"...")
+            msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
             
             print(INFO_MSG.format(msg))
             print(INFO_MSG.format(msg2))
@@ -269,10 +278,12 @@ class Contract():
                 "{:,.0f} entries @ ".format(len(self.CACHE)) \
                 + colored(f"{self.storageLocation.format(self.fileCounter)}", "green")
         print(INFO_MSG.format(msg))
+        log(msg)
         
     def log_end(self):
         msg = colored(f"terminating {self.printName}", "green", attrs=["bold"])
         print(INFO_MSG.format(msg))
+        log(msg)
                 
     def __repr__(self):
         return f"<Contract {self.name} @ {self.address}>"
