@@ -16,7 +16,6 @@ class Farm():
         print_start()
         log("".join(["="]*50)+ "\nStart new farm instance...")
         self.contracts = list()
-        self.processes = []
         
     def load_contracts(self):
         try:
@@ -39,16 +38,17 @@ class Farm():
             for i in range(cpus):
                 if i == cpus-1: tranches[i] = self.contracts[trs*i:]
                 else: tranches[i] = self.contracts[trs*i:trs*(i+1)]
-            self.processes = []
+            processes = []
             for i in range(cpus):
-                self.processes.append(Process(target = self.split_tasks, args=tuple([tranches[i]])))
-                self.processes[-1].start()
-            connection.wait(p.sentinel for p in self.processes)
+                p = Process(target = self.split_tasks, args=tuple([tranches[i]]))
+                p.start()
+                processes.append(p)
+            connection.wait(p.sentinel for p in processes)
         except KeyboardInterrupt:
             msg = colored("Safely terminating...\n", "green", attrs=["bold"])
             print(INFO_MSG.format(msg))
-            if len(self.processes) > 0:
-                for p in self.processes:
+            if len(processes) > 0:
+                for p in processes:
                     p.terminate()
                     
                 
