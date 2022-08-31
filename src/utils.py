@@ -224,6 +224,8 @@ def get_abi(contract):
         success = verify_abi(abi, contract.address, contract.name, contract.simpleMethod)
         
         if success:    
+            msg = f"contract @ {contract.address} ({contract.name}) requesting abi "
+            print(INFO_MSG.format(msg))
             with open(f"../abis/{contract.name}.abi", "w") as file:
                 file.write(abi)
                 msg = f"{contract.name} contract abi stored locally"
