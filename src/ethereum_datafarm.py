@@ -57,7 +57,7 @@ class Farm():
             for contract in c:
                 msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
                 print(INFO_MSG.format(msg))
-                log(msg)
+                log(f"Start parsing {contract}")
                 contract.scrape()
                 
         
@@ -283,12 +283,12 @@ class Contract():
                 "{:,.0f} entries @ ".format(len(self.CACHE)) \
                 + colored(f"{self.storageLocation.format(self.fileCounter)}", "green")
         print(INFO_MSG.format(msg))
-        log(msg)
+        log(f"storing {self.printName} with {len(self.CACHE)} entries @ {self.storageLocation.format(self.fileCounter)}")
         
     def log_end(self):
         msg = colored(f"terminating {self.printName}", "green", attrs=["bold"])
         print(INFO_MSG.format(msg))
-        log(msg)
+        log(f"terminating {self.printName}")
                 
     def __repr__(self):
         return f"<Contract {self.name} @ {self.address}>"
