@@ -72,9 +72,10 @@ def send_payload(payload):
             return send_payload(payload)
         
     except:
-        msg = "payload failed"
+        msg = "payload failed (fetching event)"
         print(WARN_MSG.format(msg))
         print(_res)
+        log(msg)
         try:
             print(res) 
         except:
@@ -147,7 +148,7 @@ def latest_block():
         return int(json.loads(res.content)["result"]) - 6 # 6 blocks to make sure no re-orgs
     except:
         time.sleep(np.random.randint(1,10))
-        msg = "payload failed"
+        msg = "payload failed (latest block)"
         print(WARN_MSG.format(msg))
         log(msg)
         return latest_block()
