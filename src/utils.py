@@ -63,13 +63,7 @@ def send_payload(payload):
             return "page limit reached"
             
         if int(res["status"]) != 1:
-            msg = "payload failed"
-            print(WARN_MSG.format(msg))
-            print(_res)
-            print(res)
-            print(colored("Waiting for 100 seconds", "red"))
-            time.sleep(100)
-            return send_payload(payload)
+            raise 
         
     except:
         msg = "payload failed (fetching event)"
@@ -78,6 +72,7 @@ def send_payload(payload):
         log(msg)
         try:
             print(res) 
+            print(res["message"].lower())
         except:
             pass
         print(colored("Waiting for 100 seconds", "red"))
