@@ -255,7 +255,9 @@ class Contract():
             op = "increasing"
             
         if self.chunksize <= 1:
-            self.chunksize = 2  
+            self.chunksize = 2
+        if self.chunksize > 100000:
+            self.chunksize = 100000
         if op:
             self.log_chunk_size(old_cs, op)
         
