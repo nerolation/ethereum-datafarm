@@ -85,13 +85,6 @@ Initialize farm and starts parsing data:
 <br />
 
 
-## Example dashboard
-[Stablecoin Dashboard](https://toniwahrstaetter.com/ethereum-stablecoin-dashboard.html)
-
-[Tornado Cash Dasboard](https://toniwahrstaetter.com/tornadocash.html) (mobile only)
-
-<br />
-
 ### Cite as
 
 ```
