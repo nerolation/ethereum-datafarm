@@ -227,8 +227,9 @@ class Contract():
                 self.fileCounter += 1
             
             if self.startTx == transactionHash:
-                msg = f"contract @ {self.address} ({self.name}) last known tx found; start parsing..."
-                print(INFO_MSG.format(msg))
+                if not self.run:
+                    msg = f"contract @ {self.address} ({self.name}) last known tx found; start parsing..."
+                    print(INFO_MSG.format(msg))
                 self.run = True
                 self.CACHE = pd.DataFrame(columns=self.columns)
                           
