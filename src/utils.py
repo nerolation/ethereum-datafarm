@@ -75,8 +75,8 @@ def send_payload(payload):
             print(res["message"].lower())
         except:
             pass
-        print(colored("Waiting for 100 seconds", "red"))
-        time.sleep(100)
+        print(colored("Waiting for 10 seconds", "red"))
+        time.sleep(10)
         return send_payload(payload)
         
     return res["result"]
