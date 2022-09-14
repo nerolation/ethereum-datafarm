@@ -76,19 +76,21 @@ class Contract():
         if newStartBlock:
             self.startBlock = newStartBlock
             self.startTx = newStartTx
+            
+            msg = "{} ({}) {}".format(self.address, self.name, colored("starting at last known location", "green"))
+            msg2 = "{} ({}) blockheight set to {:,.0f}".format(self.address, self.name, self.startBlock)
+            print(INFO_MSG.format(msg))
+            print(INFO_MSG.format(msg2))
+            
             if newStartTx == "None":
                 self.run = True
                 self.startTx = None
+                msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
+                print(INFO_MSG.format(msg3))
+                
             else:
                 self.run = False
-            msg = "{} ({}) {}".format(self.address, self.name, colored("starting at last known location", "green"))
-            msg2 = "{} ({}) blockheight set to {:,.0f}".format(self.address, self.name, self.startBlock)
-            msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
-            
-            print(INFO_MSG.format(msg))
-            print(INFO_MSG.format(msg2))
-            print(INFO_MSG.format(msg3))
-            
+
         else:
             self.startBlock = int(startBlock)
             self.startTx = None
