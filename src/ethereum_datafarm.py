@@ -266,7 +266,7 @@ class Contract():
         msg = "parsing {:<20} | ".format(self.printName[:17]+"...") \
             + "{:>10,.0f}-{:>10,.0f} | ".format(self.fromblock, self.toblock) \
             + colored("{:>4.0f}/1000".format(len_result), "green") +  f" | Page {page}" \
-            + " | cs {:>6,.0f} | cache {:>6,.0f}".format(self.chunksize, len(self.CACHE))
+            + " | cs {:>6,.0f} | cache {:>7,.0f}".format(self.chunksize, len(self.CACHE))
         
         print(INFO_MSG.format(msg))
     
