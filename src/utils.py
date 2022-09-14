@@ -82,7 +82,7 @@ def send_payload(payload):
     return res["result"]
             
         
-def dump_cache_to_disk(df, filename, name):
+def dump_cache_to_disk(df, filename, name, method):
     for c in df:
         if df[c].dtype == "float64":
             df[c] = df[c].apply(lambda x: int(x))
@@ -94,14 +94,14 @@ def dump_cache_to_disk(df, filename, name):
                     pass
     last_row = df.iloc[-1]
     content = "{}-{}".format(last_row["blocknumber"],last_row["txhash"])
-    with open(f"../tmp/{name}_last_stored_tx.txt", "w") as f:
+    with open(f"../tmp/{name}_{method}_last_stored_tx.txt", "w") as f:
         f.write(content)
     df.to_csv(filename)
 
     
-def check_custom_start(name):
-    if os.path.isfile(f"../tmp/{name}_last_stored_tx.txt"):
-        with open(f"../tmp/{name}_last_stored_tx.txt", "r") as file:
+def check_custom_start(name, method):
+    if os.path.isfile(f"../tmp/{name}_{method}_last_stored_tx.txt"):
+        with open(f"../tmp/{name}_{method}_last_stored_tx.txt", "r") as file:
             start = file.read()
             startblock, starttx = start.split("-")
         return int(startblock), starttx
@@ -257,6 +257,8 @@ def load_all(contracts=[],start=True,config_location="../contracts.csv"):
         file = file.read().replace(" ", "").split("\n")    
     for f in file:
         if f == "":
+            continue
+        if f.startswith("#"):
             continue
         yield tuple(re.split("\,(?=.*\()|\,(?!.*\))", f))
         

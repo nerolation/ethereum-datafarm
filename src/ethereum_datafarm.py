@@ -6,7 +6,7 @@ from multiprocessing import Process, cpu_count, connection
 import pandas as pd
 from eth_abi import decode as abi_decode
 
-SLOW_DOWN = 1 # seconds to wait between api calls
+SLOW_DOWN = 0 # seconds to wait between api calls
 STORAGE_THRESHOLD = 9e3
 
 
@@ -69,9 +69,10 @@ class Contract():
         self.address = Web3.toChecksumAddress(address)
         self.name = name.lower()
         self.method = method
+        self.simpleMethod = method.split("(")[0].lower()
         self.topic0 = get_method_from_canonical_expression(self.method)
                 
-        newStartBlock, newStartTx = check_custom_start(self.name)
+        newStartBlock, newStartTx = check_custom_start(self.name, self.simpleMethod)
         if newStartBlock:
             self.startBlock = newStartBlock
             self.startTx = newStartTx
@@ -92,7 +93,6 @@ class Contract():
         self.fromblock = self.startBlock
         self.chunksize = int(chunksize)
         
-        self.simpleMethod = method.split("(")[0].lower()
         self.printName = get_print_name(self.name)
         self.printMethod = get_print_method(self.method)
         self.storageLocation = f"../data/{self.name}/{self.simpleMethod}_" + "{}.csv"
@@ -142,7 +142,7 @@ class Contract():
                 if results == "page limit reached":
                     msg = "decreasing chunk size and trying again..."
                     print(WARN_MSG.format(msg))
-                    self.fromblock, self.startTx = check_custom_start(self.name)
+                    self.fromblock, self.startTx = check_custom_start(self.name, self.simpleMethod)
                     self.CACHE = pd.DataFrame(columns=self.columns)
                     self.run = False
                     self.chunksize = int(self.chunksize/10)
@@ -181,7 +181,7 @@ class Contract():
             
         if len(self.CACHE) > 0 and self.run:
             self.log_storage()
-            dump_cache_to_disk(self.CACHE, self.storageLocation.format(self.fileCounter), self.name)
+            dump_cache_to_disk(self.CACHE, self.storageLocation.format(self.fileCounter), self.name, self.simpleMethod)
             self.CACHE = pd.DataFrame(columns=self.columns)
             self.fileCounter += 1
             
@@ -222,7 +222,7 @@ class Contract():
 
             if len(self.CACHE) >= STORAGE_THRESHOLD and self.run:
                 self.log_storage()
-                dump_cache_to_disk(self.CACHE, self.storageLocation.format(self.fileCounter), self.name)
+                dump_cache_to_disk(self.CACHE, self.storageLocation.format(self.fileCounter), self.name, self.simpleMethod)
                 self.CACHE = pd.DataFrame(columns=self.columns)
                 self.fileCounter += 1
             
