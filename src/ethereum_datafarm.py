@@ -59,9 +59,7 @@ class Farm():
                 print(INFO_MSG.format(msg))
                 log(f"Start parsing {contract}")
                 contract.scrape()
-                
-        
-    
+
     
 
 class Contract():
@@ -85,10 +83,10 @@ class Contract():
             if newStartTx == "None":
                 self.run = True
                 self.startTx = None
-                msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
-                print(INFO_MSG.format(msg3))
                 
             else:
+                msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
+                print(INFO_MSG.format(msg3))
                 self.run = False
 
         else:
