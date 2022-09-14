@@ -76,7 +76,11 @@ class Contract():
         if newStartBlock:
             self.startBlock = newStartBlock
             self.startTx = newStartTx
-            self.run = False
+            if newStartTx == "None":
+                self.run = True
+                self.startTx = None
+            else:
+                self.run = False
             msg = "{} ({}) {}".format(self.address, self.name, colored("starting at last known location", "green"))
             msg2 = "{} ({}) blockheight set to {:,.0f}".format(self.address, self.name, self.startBlock)
             msg3 = "{} ({}) starting after tx {}".format(self.address, self.name, self.startTx[:-56]+"...")
@@ -109,7 +113,6 @@ class Contract():
         self.avgNrOfPages = [1.5]
         
         self.fileCounter = set_up_directory(self.name, self.simpleMethod)
-        
 
     
     def scrape(self):
@@ -178,6 +181,10 @@ class Contract():
                 self.timeSinceLatestBlock = datetime.now()
             
             self.fromblock =  self.toblock + 1
+            
+            content = "{}-{}".format(self.fromblock,"None")
+            with open(f"../tmp/{self.name}_{self.simpleMethod}_last_stored_tx.txt", "w") as f:
+                f.write(content)
             
         if len(self.CACHE) > 0 and self.run:
             self.log_storage()
