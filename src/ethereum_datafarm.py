@@ -52,8 +52,7 @@ class Farm():
                     p.terminate()
                     
                 
-    def split_tasks(self, c):
-        
+    def split_tasks(self, c): 
             for contract in c:
                 msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
                 print(INFO_MSG.format(msg))
@@ -117,7 +116,7 @@ class Contract():
     
     def scrape(self):
 
-        while self.fromblock < self.LATEST_BLOCK:
+        while self.fromblock + self.chunksize < self.LATEST_BLOCK:
             
             self.try_adapting_chunksize()
                         
@@ -182,15 +181,15 @@ class Contract():
             
             self.fromblock =  self.toblock + 1
             
-            content = "{}-{}".format(self.fromblock,"None")
-            with open(f"../tmp/{self.name}_{self.simpleMethod}_last_stored_tx.txt", "w") as f:
-                f.write(content)
-            
         if len(self.CACHE) > 0 and self.run:
             self.log_storage()
             dump_cache_to_disk(self.CACHE, self.storageLocation.format(self.fileCounter), self.name, self.simpleMethod)
             self.CACHE = pd.DataFrame(columns=self.columns)
             self.fileCounter += 1
+        
+        content = "{}-{}".format(self.fromblock,"None")
+        with open(f"../tmp/{self.name}_{self.simpleMethod}_last_stored_tx.txt", "w") as f:
+            f.write(content)
             
         self.log_end()
     
