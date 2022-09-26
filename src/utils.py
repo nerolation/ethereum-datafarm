@@ -68,7 +68,6 @@ def send_payload(payload):
     except:
         msg = "payload failed (fetching event)"
         print(WARN_MSG.format(msg))
-        print(_res)
         log(msg)
         try:
             print(res) 
