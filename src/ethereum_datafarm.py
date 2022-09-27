@@ -50,6 +50,12 @@ class Farm():
             if len(processes) > 0:
                 for p in processes:
                     p.terminate()
+        finally:
+            msg = colored("Terminating...\n", "red", attrs=["bold"])
+            print(INFO_MSG.format(msg))
+            if len(processes) > 0:
+                for p in processes:
+                    p.terminate()
                     
                 
     def split_tasks(self, c): 
