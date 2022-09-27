@@ -5,6 +5,7 @@ from web3 import Web3
 from multiprocessing import Process, cpu_count, connection
 import pandas as pd
 from eth_abi import decode as abi_decode
+import random
 
 SLOW_DOWN = 0 # seconds to wait between api calls
 STORAGE_THRESHOLD = 9e3
@@ -33,38 +34,34 @@ class Farm():
                 cpus = CORES-1 # CORES form utils.py
             else:
                 cpus = 1
+            #self.contracts = random.shuffle(self.contracts)
             trs = int(len(self.contracts)/cpus)
             tranches={}
             for i in range(cpus):
-                if i == cpus-1: tranches[i] = self.contracts[trs*i:]
-                else: tranches[i] = self.contracts[trs*i:trs*(i+1)]
+                if i == cpus-1: 
+                    tranches[i] = self.contracts[trs*i:]
+                else: 
+                    tranches[i] = self.contracts[trs*i:trs*(i+1)]
             processes = []
             for i in range(cpus):
                 p = Process(target = self.split_tasks, args=tuple([tranches[i]]))
                 p.start()
                 processes.append(p)
             connection.wait(p.sentinel for p in processes)
+            
         except KeyboardInterrupt:
             msg = colored("Safely terminating...\n", "green", attrs=["bold"])
             print(INFO_MSG.format(msg))
             if len(processes) > 0:
                 for p in processes:
-                    p.terminate()
-        finally:
-            msg = colored("Terminating...\n", "red", attrs=["bold"])
-            print(INFO_MSG.format(msg))
-            if len(processes) > 0:
-                for p in processes:
-                    p.terminate()
-                    
-                
+                    p.terminate()               
+               
     def split_tasks(self, c): 
             for contract in c:
                 msg = colored(f"Start parsing {contract}", "green", attrs=["bold"])
                 print(INFO_MSG.format(msg))
                 log(f"Start parsing {contract}")
                 contract.scrape()
-
     
 
 class Contract():
