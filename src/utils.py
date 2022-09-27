@@ -82,6 +82,7 @@ def send_payload(payload):
             
         
 def dump_cache_to_disk(df, filename, name, method):
+    df = df.loc[:,~df.columns.duplicated()].copy()
     for c in df:
         if df[c].dtype == "float64":
             df[c] = df[c].apply(lambda x: int(x))
@@ -91,6 +92,7 @@ def dump_cache_to_disk(df, filename, name, method):
                     df[c] = df[c].apply(lambda x: int(x))
                 except:
                     pass
+
     last_row = df.iloc[-1]
     content = "{}-{}".format(last_row["blocknumber"],last_row["txhash"])
     with open(f"../tmp/{name}_{method}_last_stored_tx.txt", "w") as f:
