@@ -12,7 +12,7 @@ from multiprocessing import cpu_count
 
 
 parser = argparse.ArgumentParser(formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=60))
-parser.add_argument('-loc', '--location', help="output location - default: ./data", default="./data")
+parser.add_argument('-loc', '--location', help="output location - default: ../data", default="./data")
 parser.add_argument('-c', '--cores', help="cores available", default=str(cpu_count()))
 parser.add_argument('-log', '--log', help="activate logging", action='store_true')
 
