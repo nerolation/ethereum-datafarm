@@ -1,5 +1,4 @@
 0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5,ens_registrar,NameRegistered(string,bytes32,address,uint256,uint256),14363664,5000
 0xdAC17F958D2ee523a2206206994597C13D831ec7,tether,Transfer(address,address,uint256),14363664,20
-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48,usdc,Transfer(address,address,uint256),14363664,500 
 0x6B175474E89094C44Da98b954EedeAC495271d0F,dai,Transfer(address,address,uint256),14363664,500 
 0x5ef30b9986345249bc32d8928B7ee64DE9435E39,makerdao,NewCdp(address,address,uint256),14363664,5000
