@@ -97,7 +97,7 @@ def dump_cache_to_disk(df, filename, name, method):
     content = "{}-{}".format(last_row["blocknumber"],last_row["txhash"])
     with open(f"../tmp/{name}_{method}_last_stored_tx.txt", "w") as f:
         f.write(content)
-    df.to_csv(filename)
+    df.to_csv(filename, index=None)
 
     
 def check_custom_start(name, method):
