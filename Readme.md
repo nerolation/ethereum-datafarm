@@ -19,7 +19,7 @@ The ethereum-datafarm aims to provide quick access to historical Ethereum event 
 * No local or [Infura](https://infura.io/?utm_source=Nerolation_Github&utm_medium=ethereum-datafarm) node required
 * Low CPU and RAM requirements 
 * Multiprocessing support
-* Custom storage location using the `-loc` or `--location` flag: E.g. `python3 run.py -loc ./myfolder
+* Custom storage location using the `-loc` or `--location` flag: E.g. `python3 run.py -loc ./myfolder`
 <br />
 
 ## Example data output
