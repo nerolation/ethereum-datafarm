@@ -38,6 +38,7 @@ $ python3 run.py
 OR
 
 ```python
+# rename module to "_" instead of "-"
 from ethereum_datafarm import *
 
 
