@@ -120,8 +120,10 @@ class Contract():
     def scrape(self):
 
         while self.fromblock + self.chunksize < self.LATEST_BLOCK:
-            
-            self.try_adapting_chunksize()
+            if self.fromblock + self.chunksize > self.LATEST_BLOCK:
+                self.chunksize = self.LATEST_BLOCK - self.fromblock
+            else:
+                self.try_adapting_chunksize()
                         
             self.toblock = self.fromblock + self.chunksize
             
