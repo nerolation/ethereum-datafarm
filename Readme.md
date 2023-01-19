@@ -1,7 +1,6 @@
 # ethereum-datafarm v2.0
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/auth_plug/Elixir%20CI?label=build&style=flat-square)
-  [![HitCount](https://hits.dwyl.com/Nerolation/ethereum-datafarm.svg?style=flat-square)](http://hits.dwyl.com/Nerolation/ethereum-datafarm)
+[![HitCount](https://hits.dwyl.com/Nerolation/ethereum-datafarm.svg?style=flat-square)](http://hits.dwyl.com/Nerolation/ethereum-datafarm)
 ### Parse Smart Contract event data without requiring an archive/full node. 
 
 The ethereum-datafarm aims to provide quick access to historical Ethereum event data by offering an easy-to-use interface to parse event logs from contracts and save them in .csv format.
