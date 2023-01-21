@@ -272,7 +272,7 @@ class Contract():
             self.log_chunk_size(old_cs, op)
         
     def log_progress(self, len_result, page):
-        msg = "parsing {:<20} | ".format(self.printName[:17]+"...") \
+        msg = "parsing {:<20} | ".format(self.printName[:16]+"...") \
             + "{:>10,.0f}-{:>10,.0f} | ".format(self.fromblock, self.toblock) \
             + colored("{:>4.0f}/1000".format(len_result), "green") +  f" | Page {page}" \
             + " | cs {:>7,.0f} | cache {:>6,.0f}".format(self.chunksize, len(self.CACHE))
@@ -286,7 +286,7 @@ class Contract():
         print(INFO_MSG.format(msg))
         
     def log_nothing_found(self):
-        msg = colored("no result", "red") + " {:^20}   | ".format(colored(self.printName[:17]+"..."), "red") \
+        msg = colored("no result", "red") + " {:<18}  | ".format(colored(self.printName[:14]+"..."), "red") \
               + "{:>10,.0f}-{:>10,.0f} | {:>9}".format(self.fromblock, self.toblock, "cs " + "{:,.0f}".format(self.chunksize))
         print(INFO_MSG.format(msg))
     
