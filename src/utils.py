@@ -298,7 +298,7 @@ def print_start():
     ╚══════╝   ╚═╝   ╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚══════╝╚═╝ ╚═════╝
     """
     print(colored(c, "green", attrs=["dark","bold"]))    
-    print(colored("© Anton Wahrst??tter 2022\n", "green", attrs=["dark","bold"]))
+    print(colored("© Toni Wahrstaetter 2023\n", "green", attrs=["dark","bold"]))
     print("Starting datafarm...")
     print(f"Storage location: ../{LOCATION}/<contract>")
 
